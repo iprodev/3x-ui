@@ -144,8 +144,7 @@ func (j *CheckClientIpJob) processLogFile() bool {
 			} else {
 				InboundClientIps[matchesEmail] = append(InboundClientIps[matchesEmail], ip)
 			}
-		}
-		else if len(matchesTwo) > 1 {
+		} else if len(matchesTwo) > 1 {
 			ip := matchesTwo[1]
 			if ip == "127.0.0.1" || ip == "::1" {
 				continue
