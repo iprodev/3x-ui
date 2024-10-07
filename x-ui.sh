@@ -48,6 +48,10 @@ elif [[ "${release}" == "armbian" ]]; then
     echo "Your OS is Armbian"
 elif [[ "${release}" == "opensuse-tumbleweed" ]]; then
     echo "Your OS is OpenSUSE Tumbleweed"
+elif [[ "${release}" == "openEuler" ]]; then
+    if [[ ${os_version} -lt 2203 ]]; then
+        echo -e "${red} Please use OpenEuler 22.03 or higher ${plain}\n" && exit 1
+    fi
 elif [[ "${release}" == "centos" ]]; then
     if [[ ${os_version} -lt 8 ]]; then
         echo -e "${red} Please use CentOS 8 or higher ${plain}\n" && exit 1
@@ -86,6 +90,7 @@ else
     echo "- Ubuntu 20.04+"
     echo "- Debian 11+"
     echo "- CentOS 8+"
+    echo "- OpenEuler 22.03+"
     echo "- Fedora 36+"
     echo "- Arch Linux"
     echo "- Parch Linux"
@@ -783,7 +788,10 @@ ssl_cert_issue_main() {
     echo -e "${green}\t1.${plain} Get SSL"
     echo -e "${green}\t2.${plain} Revoke"
     echo -e "${green}\t3.${plain} Force Renew"
+    echo -e "${green}\t4.${plain} Show Existing Domains"
+    echo -e "${green}\t5.${plain} Set Cert paths for the panel"
     echo -e "${green}\t0.${plain} Back to Main Menu"
+
     read -p "Choose an option: " choice
     case "$choice" in
     0)
@@ -793,17 +801,85 @@ ssl_cert_issue_main() {
         ssl_cert_issue
         ;;
     2)
-        local domain=""
-        read -p "Please enter your domain name to revoke the certificate: " domain
-        ~/.acme.sh/acme.sh --revoke -d ${domain}
-        LOGI "Certificate revoked"
+        local domains=$(find /root/cert/ -mindepth 1 -maxdepth 1 -type d -exec basename {} \;)
+        if [ -z "$domains" ]; then
+            echo "No certificates found to revoke."
+        else
+            echo "Existing domains:"
+            echo "$domains"
+            read -p "Please enter a domain from the list to revoke the certificate: " domain
+            if [[ " $domains " =~ " $domain " ]]; then
+                ~/.acme.sh/acme.sh --revoke -d ${domain}
+                LOGI "Certificate revoked for domain: $domain"
+            else
+                echo "Invalid domain entered."
+            fi
+        fi
         ;;
     3)
-        local domain=""
-        read -p "Please enter your domain name to forcefully renew an SSL certificate: " domain
-        ~/.acme.sh/acme.sh --renew -d ${domain} --force
+        local domains=$(find /root/cert/ -mindepth 1 -maxdepth 1 -type d -exec basename {} \;)
+        if [ -z "$domains" ]; then
+            echo "No certificates found to renew."
+        else
+            echo "Existing domains:"
+            echo "$domains"
+            read -p "Please enter a domain from the list to renew the SSL certificate: " domain
+            if [[ " $domains " =~ " $domain " ]]; then
+                ~/.acme.sh/acme.sh --renew -d ${domain} --force
+                LOGI "Certificate forcefully renewed for domain: $domain"
+            else
+                echo "Invalid domain entered."
+            fi
+        fi
         ;;
-    *) echo "Invalid choice" ;;
+    4)
+        local domains=$(find /root/cert/ -mindepth 1 -maxdepth 1 -type d -exec basename {} \;)
+        if [ -z "$domains" ]; then
+            echo "No certificates found."
+        else
+            echo "Existing domains and their paths:"
+            for domain in $domains; do
+                local cert_path="/root/cert/${domain}/fullchain.pem"
+                local key_path="/root/cert/${domain}/privkey.pem"
+                if [[ -f "${cert_path}" && -f "${key_path}" ]]; then
+                    echo -e "Domain: ${domain}"
+                    echo -e "\tCertificate Path: ${cert_path}"
+                    echo -e "\tPrivate Key Path: ${key_path}"
+                else
+                    echo -e "Domain: ${domain} - Certificate or Key missing."
+                fi
+            done
+        fi
+        ;;
+    5)
+        local domains=$(find /root/cert/ -mindepth 1 -maxdepth 1 -type d -exec basename {} \;)
+        if [ -z "$domains" ]; then
+            echo "No certificates found."
+        else
+            echo "Available domains:"
+            echo "$domains"
+            read -p "Please choose a domain to set the panel paths: " domain
+            if [[ " $domains " =~ " $domain " ]]; then
+                local webCertFile="/root/cert/${domain}/fullchain.pem"
+                local webKeyFile="/root/cert/${domain}/privkey.pem"
+                
+                if [[ -f "${webCertFile}" && -f "${webKeyFile}" ]]; then
+                    /usr/local/x-ui/x-ui setting -webCert "$webCertFile"
+                    /usr/local/x-ui/x-ui setting -webCertKey "$webKeyFile"
+                    echo "Panel paths set for domain: $domain"
+                    echo "  - Certificate File: $webCertFile"
+                    echo "  - Private Key File: $webKeyFile"
+                else
+                    echo "Certificate or private key not found for domain: $domain."
+                fi
+            else
+                echo "Invalid domain entered."
+            fi
+        fi
+        ;;
+    *) 
+        echo "Invalid choice"
+        ;;
     esac
 }
 
