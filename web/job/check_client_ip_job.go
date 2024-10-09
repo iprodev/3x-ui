@@ -118,7 +118,7 @@ func (j *CheckClientIpJob) processLogFile() bool {
 		line := scanner.Text()
 
 		ipRegx, _ := regexp.Compile(`from \[?([0-9a-fA-F:.]+)\]?:\d+ accepted`)
-		ipRegxTwo, _ := regexp.Compile(`from tcp:(\[?([0-9a-fA-F:.]+)\]?):\d+ accepted`)
+		ipRegxTwo, _ := regexp.Compile(`from tcp:\[?([0-9a-fA-F:.]+)\]?:\d+ accepted`)
 		emailRegx, _ := regexp.Compile(`email: (\S+)$`)
 
 		matchesOne := ipRegx.FindStringSubmatch(line)
