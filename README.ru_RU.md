@@ -32,10 +32,10 @@ bash <(curl -Ls https://raw.githubusercontent.com/iprodev/3x-ui/master/install.s
 
 ## Установка определённой версии
 
-Чтобы установить нужную вам версию, добавьте номер версии в конец команды установки. Например, `v2.4.3`:
+Чтобы установить нужную вам версию, добавьте номер версии в конец команды установки. Например, `v2.4.4`:
 
 ```
-bash <(curl -Ls https://raw.githubusercontent.com/iprodev/3x-ui/master/install.sh) v2.4.3
+bash <(curl -Ls https://raw.githubusercontent.com/iprodev/3x-ui/master/install.sh) v2.4.4
 ```
 
 ## SSL Сертификат

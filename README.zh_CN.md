@@ -32,10 +32,10 @@ bash <(curl -Ls https://raw.githubusercontent.com/iprodev/3x-ui/master/install.s
 
 ## 安装指定版本
 
-要安装所需的版本，请将该版本添加到安装命令的末尾。 e.g., ver `v2.4.3`:
+要安装所需的版本，请将该版本添加到安装命令的末尾。 e.g., ver `v2.4.4`:
 
 ```
-bash <(curl -Ls https://raw.githubusercontent.com/iprodev/3x-ui/master/install.sh) v2.4.3
+bash <(curl -Ls https://raw.githubusercontent.com/iprodev/3x-ui/master/install.sh) v2.4.4
 ```
 
 ### SSL证书
