@@ -9,10 +9,10 @@
 
 **一个更好的面板 • 基于Xray Core构建**
 
-[![](https://img.shields.io/github/v/release/mhsanaei/3x-ui.svg)](https://github.com/MHSanaei/3x-ui/releases)
-[![](https://img.shields.io/github/actions/workflow/status/mhsanaei/3x-ui/release.yml.svg)](#)
-[![GO Version](https://img.shields.io/github/go-mod/go-version/mhsanaei/3x-ui.svg)](#)
-[![Downloads](https://img.shields.io/github/downloads/mhsanaei/3x-ui/total.svg)](#)
+[![](https://img.shields.io/github/v/release/iprodev/3x-ui.svg)](https://github.com/iprodev/3x-ui/releases)
+[![](https://img.shields.io/github/actions/workflow/status/iprodev/3x-ui/release.yml.svg)](#)
+[![GO Version](https://img.shields.io/github/go-mod/go-version/iprodev/3x-ui.svg)](#)
+[![Downloads](https://img.shields.io/github/downloads/iprodev/3x-ui/total.svg)](#)
 [![License](https://img.shields.io/badge/license-GPL%20V3-blue.svg?longCache=true)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
 > **Disclaimer:** 此项目仅供个人学习交流，请不要用于非法目的，请不要在生产环境中使用。
@@ -20,19 +20,22 @@
 **如果此项目对你有用，请给一个**:star2:
 
 <p align="left">
-  <a href="https://buymeacoffee.com/mhsanaei" target="_blank">
+  <a href="https://buymeacoffee.com/iprodev" target="_blank">
     <img src="./media/buymeacoffe.png" alt="Image">
   </a>
 </p>
 
-- USDT (TRC20): `TXncxkvhkDWGts487Pjqq1qT9JmwRUz8CC`
-- MATIC (polygon): `0x41C9548675D044c6Bfb425786C765bc37427256A`
-- LTC (Litecoin): `ltc1q2ach7x6d2zq0n4l0t4zl7d7xe2s6fs7a3vspwv`
+- USDT (BEP20): `0x1B42877B9D6F77Fb5c9e464cCC3fCb5F1811b215`
+- MATIC (polygon): `0x1B42877B9D6F77Fb5c9e464cCC3fCb5F1811b215`
+- ETH (ERC20): `0x1B42877B9D6F77Fb5c9e464cCC3fCb5F1811b215`
+- LTC (Litecoin): `ltc1qg93qlvr0rvdjg0ycv2alr27wt95e74hz338nym`
+- BNB (BEP20): `0x1B42877B9D6F77Fb5c9e464cCC3fCb5F1811b215`
+- ADA (Cardano): `addr1qynzt6gvvx35s2202vggg45ufe2f7wekgytc84h05v48jl3radprnnagshnwgewrs8dws7g0ge733sj2phk2rn5j4e8qs2434f`
 
 ## 安装 & 升级
 
 ```
-bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh)
+bash <(curl -Ls https://raw.githubusercontent.com/iprodev/3x-ui/master/install.sh)
 ```
 
 ## 安装旧版本 (我们不建议)
@@ -40,7 +43,7 @@ bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.
 要安装您想要的版本，请使用以下安装命令。例如，ver `v1.7.9`:
 
 ```
-VERSION=v1.7.9 && <(curl -Ls "https://raw.githubusercontent.com/mhsanaei/3x-ui/$VERSION/install.sh") $VERSION
+VERSION=v1.7.9 && <(curl -Ls "https://raw.githubusercontent.com/iprodev/3x-ui/$VERSION/install.sh") $VERSION
 ```
 
 ### SSL证书
@@ -116,7 +119,7 @@ case "${ARCH}" in
 esac
 
 
-wget https://github.com/MHSanaei/3x-ui/releases/latest/download/x-ui-linux-${XUI_ARCH}.tar.gz
+wget https://github.com/iprodev/3x-ui/releases/latest/download/x-ui-linux-${XUI_ARCH}.tar.gz
 ```
 
 2. 下载压缩包后，执行以下命令安装或升级 x-ui：
@@ -163,7 +166,7 @@ systemctl restart x-ui
 2. 克隆仓库：
 
    ```sh
-   git clone https://github.com/MHSanaei/3x-ui.git
+   git clone https://github.com/iprodev/3x-ui.git
    cd 3x-ui
    ```
 
@@ -183,7 +186,7 @@ systemctl restart x-ui
       --network=host \
       --restart=unless-stopped \
       --name 3x-ui \
-      ghcr.io/mhsanaei/3x-ui:latest
+      ghcr.io/iprodev/3x-ui:latest
    ```
 
 更新至最新版本
@@ -584,4 +587,4 @@ XUI_BIN_FOLDER="bin" XUI_DB_FOLDER="/etc/x-ui" go build main.go
 
 ## Star趋势
 
-[![Stargazers over time](https://starchart.cc/MHSanaei/3x-ui.svg?variant=adaptive)](https://starchart.cc/MHSanaei/3x-ui)
+[![Stargazers over time](https://starchart.cc/iprodev/3x-ui.svg?variant=adaptive)](https://starchart.cc/iprodev/3x-ui)
