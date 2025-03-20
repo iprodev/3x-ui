@@ -40,10 +40,10 @@ bash <(curl -Ls https://raw.githubusercontent.com/iprodev/3x-ui/master/install.s
 
 ## Установить старую версию (мы не рекомендуем)
 
-Чтобы установить желаемую версию, используйте следующую команду установки. Например, ver `v1.7.9`:
+Чтобы установить желаемую версию, используйте следующую команду установки. Например, ver `v2.4.3`:
 
 ```
-VERSION=v1.7.9 && <(curl -Ls "https://raw.githubusercontent.com/iprodev/3x-ui/$VERSION/install.sh") $VERSION
+VERSION=v2.4.3 && <(curl -Ls "https://raw.githubusercontent.com/iprodev/3x-ui/$VERSION/install.sh") $VERSION
 ```
 
 ## SSL Сертификат

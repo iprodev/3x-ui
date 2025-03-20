@@ -40,10 +40,10 @@ bash <(curl -Ls https://raw.githubusercontent.com/iprodev/3x-ui/master/install.s
 
 ## 安装旧版本 (我们不建议)
 
-要安装您想要的版本，请使用以下安装命令。例如，ver `v1.7.9`:
+要安装您想要的版本，请使用以下安装命令。例如，ver `v2.4.3`:
 
 ```
-VERSION=v1.7.9 && <(curl -Ls "https://raw.githubusercontent.com/iprodev/3x-ui/$VERSION/install.sh") $VERSION
+VERSION=v2.4.3 && <(curl -Ls "https://raw.githubusercontent.com/iprodev/3x-ui/$VERSION/install.sh") $VERSION
 ```
 
 ### SSL证书
