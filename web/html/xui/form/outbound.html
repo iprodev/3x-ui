@@ -66,7 +66,7 @@
             </a-divider>
             <a-form-item label='Type'>
               <a-select v-model="noise.type" :dropdown-class-name="themeSwitcher.currentTheme">
-                <a-select-option v-for="s in ['rand','base64','str']" :value="s">[[ s ]]</a-select-option>
+                <a-select-option v-for="s in ['rand','base64','str', 'hex']" :value="s">[[ s ]]</a-select-option>
               </a-select>
             </a-form-item>
             <a-form-item label='Packet'>
@@ -399,7 +399,7 @@
             <a-input v-model="outbound.stream.xhttp.xmux.hMaxReusableSecs"></a-input>
           </a-form-item>
           <a-form-item label='Keep Alive Period'>
-            <a-input v-model.number="outbound.stream.xhttp.xmux.hKeepAlivePeriod"></a-input>
+            <a-input-number v-model.number="outbound.stream.xhttp.xmux.hKeepAlivePeriod"></a-input-number>
           </a-form-item>
         </template>
       </template>
@@ -465,11 +465,16 @@
             <a-select-option v-for="tag in ['', ...outModal.tags]" :value="tag">[[ tag ]]</a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item label="TCP Fast Open">
-          <a-switch v-model="outbound.stream.sockopt.tcpFastOpen"></a-switch>
+        <a-form-item label='Address Port Strategy'>
+          <a-select v-model="outbound.stream.sockopt.addressPortStrategy" :dropdown-class-name="themeSwitcher.currentTheme">
+            <a-select-option v-for="key in Address_Port_Strategy" :value="key">[[ key ]]</a-select-option>
+          </a-select>
         </a-form-item>
         <a-form-item label="Keep Alive Interval">
-          <a-input-number v-model="outbound.stream.sockopt.tcpKeepAliveInterval" :min="0"></a-input-number>
+          <a-input-number v-model.number="outbound.stream.sockopt.tcpKeepAliveInterval" :min="0"></a-input-number>
+        </a-form-item>
+        <a-form-item label="TCP Fast Open">
+          <a-switch v-model="outbound.stream.sockopt.tcpFastOpen"></a-switch>
         </a-form-item>
         <a-form-item label="Multipath TCP">
           <a-switch v-model.trim="outbound.stream.sockopt.tcpMptcp"></a-switch>
@@ -486,10 +491,10 @@
         </a-form-item>
         <template v-if="outbound.mux.enabled">
           <a-form-item label="Concurrency">
-            <a-input-number v-model="outbound.mux.concurrency" :min="-1" :max="1024"></a-input-number>
+            <a-input-number v-model.number="outbound.mux.concurrency" :min="-1" :max="1024"></a-input-number>
           </a-form-item>
           <a-form-item label="xudp Concurrency">
-            <a-input-number v-model="outbound.mux.xudpConcurrency" :min="-1" :max="1024"></a-input-number>
+            <a-input-number v-model.number="outbound.mux.xudpConcurrency" :min="-1" :max="1024"></a-input-number>
           </a-form-item>
           <a-form-item label="xudp UDP 443">
             <a-select v-model="outbound.mux.xudpProxyUDP443" :dropdown-class-name="themeSwitcher.currentTheme">
@@ -501,12 +506,12 @@
     </a-form>
   </a-tab-pane>
   <a-tab-pane key="2" tab="JSON" force-render="true">
-    <a-form-item style="margin: 10px 0"> Link: <a-input v-model.trim="outModal.link" style="width: 300px; margin-right: 5px;" placeholder="vmess:// vless:// trojan:// ss://"></a-input>
-      <a-button @click="convertLink" type="primary">
-        <a-icon type="form"></a-icon>
-      </a-button>
-    </a-form-item>
-    <textarea style="position:absolute; left: -800px;" id="outboundJson"></textarea>
+    <a-space direction="vertical" :size="10" style="margin-top: 10px;">
+      <a-input addon-before='{{ i18n "pages.xray.outbound.link" }}' v-model.trim="outModal.link" placeholder="vmess:// vless:// trojan:// ss://">
+        <a-icon slot="addonAfter" type="form" @click="convertLink"></a-icon>
+      </a-input>
+      <textarea style="position:absolute; left: -800px;" id="outboundJson"></textarea>
+    </a-space>
   </a-tab-pane>
 </a-tabs>
 {{end}}
