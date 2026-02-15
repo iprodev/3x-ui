@@ -21,10 +21,9 @@ const (
 )
 
 type User struct {
-	Id          int    `json:"id" gorm:"primaryKey;autoIncrement"`
-	Username    string `json:"username"`
-	Password    string `json:"password"`
-	LoginSecret string `json:"loginSecret"`
+	Id       int    `json:"id" gorm:"primaryKey;autoIncrement"`
+	Username string `json:"username"`
+	Password string `json:"password"`
 }
 
 type Inbound struct {
@@ -33,6 +32,7 @@ type Inbound struct {
 	Up          int64                `json:"up" form:"up"`
 	Down        int64                `json:"down" form:"down"`
 	Total       int64                `json:"total" form:"total"`
+	AllTime     int64                `json:"allTime" form:"allTime" gorm:"default:0"`
 	Remark      string               `json:"remark" form:"remark"`
 	Enable      bool                 `json:"enable" form:"enable"`
 	ExpiryTime  int64                `json:"expiryTime" form:"expiryTime"`
@@ -46,7 +46,6 @@ type Inbound struct {
 	StreamSettings string   `json:"streamSettings" form:"streamSettings"`
 	Tag            string   `json:"tag" form:"tag" gorm:"unique"`
 	Sniffing       string   `json:"sniffing" form:"sniffing"`
-	Allocate       string   `json:"allocate" form:"allocate"`
 }
 
 type OutboundTraffics struct {
@@ -63,6 +62,11 @@ type InboundClientIps struct {
 	Ips         string `json:"ips" form:"ips"`
 }
 
+type HistoryOfSeeders struct {
+	Id         int    `json:"id" gorm:"primaryKey;autoIncrement"`
+	SeederName string `json:"seederName"`
+}
+
 func (i *Inbound) GenXrayInboundConfig() *xray.InboundConfig {
 	listen := i.Listen
 	if listen != "" {
@@ -76,7 +80,6 @@ func (i *Inbound) GenXrayInboundConfig() *xray.InboundConfig {
 		StreamSettings: json_util.RawMessage(i.StreamSettings),
 		Tag:            i.Tag,
 		Sniffing:       json_util.RawMessage(i.Sniffing),
-		Allocate:       json_util.RawMessage(i.Allocate),
 	}
 }
 
@@ -100,4 +103,6 @@ type Client struct {
 	SubID      string `json:"subId" form:"subId"`
 	Comment    string `json:"comment" form:"comment"`
 	Reset      int    `json:"reset" form:"reset"`
+	CreatedAt  int64  `json:"created_at,omitempty"`
+	UpdatedAt  int64  `json:"updated_at,omitempty"`
 }

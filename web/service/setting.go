@@ -32,7 +32,7 @@ var defaultValueMap = map[string]string{
 	"webKeyFile":                  "",
 	"secret":                      random.Seq(32),
 	"webBasePath":                 "/",
-	"sessionMaxAge":               "60",
+	"sessionMaxAge":               "360",
 	"pageSize":                    "50",
 	"expireDiff":                  "0",
 	"trafficDiff":                 "0",
@@ -48,7 +48,8 @@ var defaultValueMap = map[string]string{
 	"tgBotLoginNotify":            "true",
 	"tgCpu":                       "80",
 	"tgLang":                      "en-US",
-	"secretEnable":                "false",
+	"twoFactorEnable":             "false",
+	"twoFactorToken":              "",
 	"subEnable":                   "false",
 	"subTitle":                    "",
 	"subListen":                   "",
@@ -71,6 +72,7 @@ var defaultValueMap = map[string]string{
 	"warp":                        "",
 	"externalTrafficInformEnable": "false",
 	"externalTrafficInformURI":    "",
+	"trafficCoefficient":          "1",
 }
 
 type SettingService struct{}
@@ -131,6 +133,12 @@ func (s *SettingService) GetAllSetting() (*entity.AllSetting, error) {
 			fieldV.SetString(value)
 		case bool:
 			fieldV.SetBool(value == "true")
+		case float64:
+			n, err := strconv.ParseFloat(value, 64)
+			if err != nil {
+				return err
+			}
+			fieldV.SetFloat(n)
 		default:
 			return common.NewErrorf("unknown field %v type %v", key, t)
 		}
@@ -166,8 +174,7 @@ func (s *SettingService) ResetSettings() error {
 		return err
 	}
 	return db.Model(model.User{}).
-		Where("1 = 1").
-		Update("login_secret", "").Error
+		Where("1 = 1").Error
 }
 
 func (s *SettingService) getSetting(key string) (*model.Setting, error) {
@@ -318,6 +325,22 @@ func (s *SettingService) GetTgLang() (string, error) {
 	return s.getString("tgLang")
 }
 
+func (s *SettingService) GetTwoFactorEnable() (bool, error) {
+	return s.getBool("twoFactorEnable")
+}
+
+func (s *SettingService) SetTwoFactorEnable(value bool) error {
+	return s.setBool("twoFactorEnable", value)
+}
+
+func (s *SettingService) GetTwoFactorToken() (string, error) {
+	return s.getString("twoFactorToken")
+}
+
+func (s *SettingService) SetTwoFactorToken(value string) error {
+	return s.setString("twoFactorToken", value)
+}
+
 func (s *SettingService) GetPort() (int, error) {
 	return s.getInt("webPort")
 }
@@ -356,14 +379,6 @@ func (s *SettingService) GetSessionMaxAge() (int, error) {
 
 func (s *SettingService) GetRemarkModel() (string, error) {
 	return s.getString("remarkModel")
-}
-
-func (s *SettingService) GetSecretStatus() (bool, error) {
-	return s.getBool("secretEnable")
-}
-
-func (s *SettingService) SetSecretStatus(value bool) error {
-	return s.setBool("secretEnable", value)
 }
 
 func (s *SettingService) GetSecret() ([]byte, error) {
@@ -501,6 +516,18 @@ func (s *SettingService) GetWarp() (string, error) {
 
 func (s *SettingService) SetWarp(data string) error {
 	return s.setString("warp", data)
+}
+
+func (s *SettingService) getFloat64(key string) (float64, error) {
+	str, err := s.getString(key)
+	if err != nil {
+		return 0, err
+	}
+	return strconv.ParseFloat(str, 64)
+}
+
+func (s *SettingService) GetTrafficCoefficient() (float64, error) {
+	return s.getFloat64("trafficCoefficient")
 }
 
 func (s *SettingService) GetExternalTrafficInformEnable() (bool, error) {

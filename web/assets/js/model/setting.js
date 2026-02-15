@@ -7,7 +7,7 @@ class AllSetting {
         this.webCertFile = "";
         this.webKeyFile = "";
         this.webBasePath = "/";
-        this.sessionMaxAge = 60;
+        this.sessionMaxAge = 360;
         this.pageSize = 50;
         this.expireDiff = 0;
         this.trafficDiff = 0;
@@ -23,8 +23,9 @@ class AllSetting {
         this.tgBotLoginNotify = true;
         this.tgCpu = 80;
         this.tgLang = "en-US";
+        this.twoFactorEnable = false;
+        this.twoFactorToken = "";
         this.xrayTemplateConfig = "";
-        this.secretEnable = false;
         this.subEnable = false;
         this.subTitle = "";
         this.subListen = "";
@@ -46,6 +47,7 @@ class AllSetting {
         this.subJsonMux = "";
         this.subJsonRules = "";
 
+        this.trafficCoefficient = 1;
         this.timeLocation = "Local";
 
         if (data == null) {

@@ -354,13 +354,15 @@ class TlsStreamSettings extends CommonClass {
         serverName = '',
         alpn = [],
         fingerprint = '',
-        allowInsecure = false
+        allowInsecure = false,
+        echConfigList = '',
     ) {
         super();
         this.serverName = serverName;
         this.alpn = alpn;
         this.fingerprint = fingerprint;
         this.allowInsecure = allowInsecure;
+        this.echConfigList = echConfigList;
     }
 
     static fromJson(json = {}) {
@@ -369,6 +371,7 @@ class TlsStreamSettings extends CommonClass {
             json.alpn,
             json.fingerprint,
             json.allowInsecure,
+            json.echConfigList,
         );
     }
 
@@ -378,6 +381,7 @@ class TlsStreamSettings extends CommonClass {
             alpn: this.alpn,
             fingerprint: this.fingerprint,
             allowInsecure: this.allowInsecure,
+            echConfigList: this.echConfigList
         };
     }
 }
@@ -388,7 +392,8 @@ class RealityStreamSettings extends CommonClass {
         fingerprint = '',
         serverName = '',
         shortId = '',
-        spiderX = '/'
+        spiderX = '',
+        mldsa65Verify = ''
     ) {
         super();
         this.publicKey = publicKey;
@@ -396,6 +401,7 @@ class RealityStreamSettings extends CommonClass {
         this.serverName = serverName;
         this.shortId = shortId
         this.spiderX = spiderX;
+        this.mldsa65Verify = mldsa65Verify;
     }
     static fromJson(json = {}) {
         return new RealityStreamSettings(
@@ -404,6 +410,7 @@ class RealityStreamSettings extends CommonClass {
             json.serverName,
             json.shortId,
             json.spiderX,
+            json.mldsa65Verify
         );
     }
     toJson() {
@@ -413,6 +420,7 @@ class RealityStreamSettings extends CommonClass {
             serverName: this.serverName,
             shortId: this.shortId,
             spiderX: this.spiderX,
+            mldsa65Verify: this.mldsa65Verify
         };
     }
 };
@@ -616,11 +624,27 @@ class Outbound extends CommonClass {
     }
 
     canEnableMux() {
-        if (this.settings.flow && this.settings.flow != '') {
+        // Disable Mux if flow is set
+        if (this.settings.flow && this.settings.flow !== '') {
             this.mux.enabled = false;
             return false;
         }
-        return [Protocols.VMess, Protocols.VLESS, Protocols.Trojan, Protocols.Shadowsocks, Protocols.HTTP, Protocols.Socks].includes(this.protocol);
+
+        // Disable Mux if network is xhttp
+        if (this.stream.network === 'xhttp') {
+            this.mux.enabled = false;
+            return false;
+        }
+
+        // Allow Mux only for these protocols
+        return [
+            Protocols.VMess,
+            Protocols.VLESS,
+            Protocols.Trojan,
+            Protocols.Shadowsocks,
+            Protocols.HTTP,
+            Protocols.Socks
+        ].includes(this.protocol);
     }
 
     hasVnext() {
@@ -762,7 +786,8 @@ class Outbound extends CommonClass {
             let alpn = url.searchParams.get('alpn');
             let allowInsecure = url.searchParams.get('allowInsecure');
             let sni = url.searchParams.get('sni') ?? '';
-            stream.tls = new TlsStreamSettings(sni, alpn ? alpn.split(',') : [], fp, allowInsecure == 1);
+            let ech = url.searchParams.get('ech') ?? '';
+            stream.tls = new TlsStreamSettings(sni, alpn ? alpn.split(',') : [], fp, allowInsecure == 1, ech);
         }
 
         if (security == 'reality') {
@@ -771,7 +796,8 @@ class Outbound extends CommonClass {
             let sni = url.searchParams.get('sni') ?? '';
             let sid = url.searchParams.get('sid') ?? '';
             let spx = url.searchParams.get('spx') ?? '';
-            stream.reality = new RealityStreamSettings(pbk, fp, sni, sid, spx);
+            let pqv = url.searchParams.get('pqv') ?? '';
+            stream.reality = new RealityStreamSettings(pbk, fp, sni, sid, spx, pqv);
         }
 
         const regex = /([^@]+):\/\/([^@]+)@(.+):(\d+)(.*)$/;
@@ -893,12 +919,14 @@ Outbound.FreedomSettings.Fragment = class extends CommonClass {
     constructor(
         packets = '1-3',
         length = '',
-        interval = ''
+        interval = '',
+        maxSplit = ''
     ) {
         super();
         this.packets = packets;
         this.length = length;
         this.interval = interval;
+        this.maxSplit = maxSplit;
     }
 
     static fromJson(json = {}) {
@@ -906,6 +934,7 @@ Outbound.FreedomSettings.Fragment = class extends CommonClass {
             json.packets,
             json.length,
             json.interval,
+            json.maxSplit
         );
     }
 };
@@ -914,12 +943,14 @@ Outbound.FreedomSettings.Noise = class extends CommonClass {
     constructor(
         type = 'rand',
         packet = '10-20',
-        delay = '10-16'
+        delay = '10-16',
+        applyTo = 'ip'
     ) {
         super();
         this.type = type;
         this.packet = packet;
         this.delay = delay;
+        this.applyTo = applyTo;
     }
 
     static fromJson(json = {}) {
@@ -927,6 +958,7 @@ Outbound.FreedomSettings.Noise = class extends CommonClass {
             json.type,
             json.packet,
             json.delay,
+            json.applyTo
         );
     }
 
@@ -935,6 +967,7 @@ Outbound.FreedomSettings.Noise = class extends CommonClass {
             type: this.type,
             packet: this.packet,
             delay: this.delay,
+            applyTo: this.applyTo
         };
     }
 };
@@ -962,7 +995,7 @@ Outbound.DNSSettings = class extends CommonClass {
         network = 'udp',
         address = '',
         port = 53,
-        nonIPQuery = 'drop',
+        nonIPQuery = 'reject',
         blockTypes = []
     ) {
         super();

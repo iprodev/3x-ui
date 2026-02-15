@@ -2,6 +2,7 @@ package entity
 
 import (
 	"crypto/tls"
+	"math"
 	"net"
 	"strings"
 	"time"
@@ -38,7 +39,8 @@ type AllSetting struct {
 	TgCpu                       int    `json:"tgCpu" form:"tgCpu"`
 	TgLang                      string `json:"tgLang" form:"tgLang"`
 	TimeLocation                string `json:"timeLocation" form:"timeLocation"`
-	SecretEnable                bool   `json:"secretEnable" form:"secretEnable"`
+	TwoFactorEnable             bool   `json:"twoFactorEnable" form:"twoFactorEnable"`
+	TwoFactorToken              string `json:"twoFactorToken" form:"twoFactorToken"`
 	SubEnable                   bool   `json:"subEnable" form:"subEnable"`
 	SubTitle                    string `json:"subTitle" form:"subTitle"`
 	SubListen                   string `json:"subListen" form:"subListen"`
@@ -59,7 +61,8 @@ type AllSetting struct {
 	SubJsonNoises               string `json:"subJsonNoises" form:"subJsonNoises"`
 	SubJsonMux                  string `json:"subJsonMux" form:"subJsonMux"`
 	SubJsonRules                string `json:"subJsonRules" form:"subJsonRules"`
-	Datepicker                  string `json:"datepicker" form:"datepicker"`
+	Datepicker                  string  `json:"datepicker" form:"datepicker"`
+	TrafficCoefficient          float64 `json:"trafficCoefficient" form:"trafficCoefficient"`
 }
 
 func (s *AllSetting) CheckValid() error {
@@ -77,11 +80,11 @@ func (s *AllSetting) CheckValid() error {
 		}
 	}
 
-	if s.WebPort <= 0 || s.WebPort > 65535 {
+	if s.WebPort <= 0 || s.WebPort > math.MaxUint16 {
 		return common.NewError("web port is not a valid port:", s.WebPort)
 	}
 
-	if s.SubPort <= 0 || s.SubPort > 65535 {
+	if s.SubPort <= 0 || s.SubPort > math.MaxUint16 {
 		return common.NewError("Sub port is not a valid port:", s.SubPort)
 	}
 
@@ -121,6 +124,10 @@ func (s *AllSetting) CheckValid() error {
 	}
 	if !strings.HasSuffix(s.SubJsonPath, "/") {
 		s.SubJsonPath += "/"
+	}
+
+	if s.TrafficCoefficient <= 0 {
+		s.TrafficCoefficient = 1
 	}
 
 	_, err := time.LoadLocation(s.TimeLocation)
