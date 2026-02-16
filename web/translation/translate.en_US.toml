@@ -188,6 +188,8 @@
 "monitorDesc" = "Leave blank to listen on all IPs"
 "meansNoLimit" = "= Unlimited. (unit: GB)"
 "totalFlow" = "Total Flow"
+"trafficCoefficient" = "Traffic Coefficient"
+"trafficCoefficientDesc" = "Multiply traffic by this coefficient for this inbound. (default: 1)"
 "leaveBlankToNeverExpire" = "Leave blank to never expire"
 "noRecommendKeepDefault" = "It is recommended to keep the default"
 "certificatePath" = "File Path"

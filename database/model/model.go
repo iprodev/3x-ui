@@ -44,8 +44,9 @@ type Inbound struct {
 	Protocol       Protocol `json:"protocol" form:"protocol"`
 	Settings       string   `json:"settings" form:"settings"`
 	StreamSettings string   `json:"streamSettings" form:"streamSettings"`
-	Tag            string   `json:"tag" form:"tag" gorm:"unique"`
-	Sniffing       string   `json:"sniffing" form:"sniffing"`
+	Tag                string   `json:"tag" form:"tag" gorm:"unique"`
+	Sniffing           string   `json:"sniffing" form:"sniffing"`
+	TrafficCoefficient float64  `json:"trafficCoefficient" form:"trafficCoefficient" gorm:"default:1"`
 }
 
 type OutboundTraffics struct {

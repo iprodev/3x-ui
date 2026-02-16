@@ -188,6 +188,8 @@
 "monitorDesc" = "به‌طور پیش‌فرض خالی‌بگذارید"
 "meansNoLimit" = "0 = واحد: گیگابایت) نامحدود)"
 "totalFlow" = "ترافیک کل"
+"trafficCoefficient" = "ضریب مصرف ترافیک"
+"trafficCoefficientDesc" = "ترافیک این اینباند در این ضریب ضرب می‌شود. (پیش‌فرض: 1)"
 "leaveBlankToNeverExpire" = "برای منقضی‌نشدن خالی‌بگذارید"
 "noRecommendKeepDefault" = "توصیه‌می‌شود به‌طور پیش‌فرض حفظ‌شود"
 "certificatePath" = "مسیر فایل"

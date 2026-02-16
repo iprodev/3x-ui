@@ -847,12 +847,6 @@ class LanguageManager {
     }
 }
 
-class DeviceUtils {
-    static isMobile() {
-        return window.innerWidth <= 768;
-    }
-}
-
 const MediaQueryMixin = {
     data() {
         return {

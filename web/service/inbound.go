@@ -909,15 +909,36 @@ func (s *InboundService) addInboundTraffic(tx *gorm.DB, traffics []*xray.Traffic
 	}
 
 	settingService := SettingService{}
-	coefficient, err := settingService.GetTrafficCoefficient()
+	globalCoeff, err := settingService.GetTrafficCoefficient()
 	if err != nil {
-		coefficient = 1
+		globalCoeff = 1
+	}
+
+	// Fetch per-inbound coefficients
+	tags := make([]string, 0)
+	for _, traffic := range traffics {
+		if traffic.IsInbound {
+			tags = append(tags, traffic.Tag)
+		}
+	}
+	inboundCoeffMap := make(map[string]float64)
+	if len(tags) > 0 {
+		var inbounds []model.Inbound
+		tx.Model(&model.Inbound{}).Where("tag IN (?)", tags).Select("tag, traffic_coefficient").Find(&inbounds)
+		for _, ib := range inbounds {
+			inboundCoeffMap[ib.Tag] = ib.TrafficCoefficient
+		}
 	}
 
 	for _, traffic := range traffics {
 		if traffic.IsInbound {
-			up := int64(float64(traffic.Up) * coefficient)
-			down := int64(float64(traffic.Down) * coefficient)
+			ibCoeff := inboundCoeffMap[traffic.Tag]
+			if ibCoeff <= 0 {
+				ibCoeff = 1
+			}
+			finalCoeff := globalCoeff * ibCoeff
+			up := int64(float64(traffic.Up) * finalCoeff)
+			down := int64(float64(traffic.Down) * finalCoeff)
 			err = tx.Model(&model.Inbound{}).Where("tag = ?", traffic.Tag).
 				Updates(map[string]any{
 					"up":       gorm.Expr("up + ?", up),
@@ -964,16 +985,35 @@ func (s *InboundService) addClientTraffic(tx *gorm.DB, traffics []*xray.ClientTr
 	}
 
 	settingService := SettingService{}
-	coefficient, coeffErr := settingService.GetTrafficCoefficient()
+	globalCoeff, coeffErr := settingService.GetTrafficCoefficient()
 	if coeffErr != nil {
-		coefficient = 1
+		globalCoeff = 1
+	}
+
+	// Fetch per-inbound coefficients
+	inboundIds := make([]int, 0)
+	for _, ct := range dbClientTraffics {
+		inboundIds = append(inboundIds, ct.InboundId)
+	}
+	inboundCoeffMap := make(map[int]float64)
+	if len(inboundIds) > 0 {
+		var inbounds []model.Inbound
+		tx.Model(&model.Inbound{}).Where("id IN (?)", inboundIds).Select("id, traffic_coefficient").Find(&inbounds)
+		for _, ib := range inbounds {
+			inboundCoeffMap[ib.Id] = ib.TrafficCoefficient
+		}
 	}
 
 	for dbTraffic_index := range dbClientTraffics {
 		for traffic_index := range traffics {
 			if dbClientTraffics[dbTraffic_index].Email == traffics[traffic_index].Email {
-				up := int64(float64(traffics[traffic_index].Up) * coefficient)
-				down := int64(float64(traffics[traffic_index].Down) * coefficient)
+				ibCoeff := inboundCoeffMap[dbClientTraffics[dbTraffic_index].InboundId]
+				if ibCoeff <= 0 {
+					ibCoeff = 1
+				}
+				finalCoeff := globalCoeff * ibCoeff
+				up := int64(float64(traffics[traffic_index].Up) * finalCoeff)
+				down := int64(float64(traffics[traffic_index].Down) * finalCoeff)
 				dbClientTraffics[dbTraffic_index].Up += up
 				dbClientTraffics[dbTraffic_index].Down += down
 				dbClientTraffics[dbTraffic_index].AllTime += (up + down)

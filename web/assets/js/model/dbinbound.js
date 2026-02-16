@@ -7,6 +7,7 @@ class DBInbound {
         this.down = 0;
         this.total = 0;
         this.allTime = 0;
+        this.trafficCoefficient = 1;
         this.remark = "";
         this.enable = true;
         this.expiryTime = 0;
