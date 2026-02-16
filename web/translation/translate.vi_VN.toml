@@ -50,6 +50,7 @@
 "fail" = "Thất bại"
 "comment" = "Bình luận"
 "success" = "Thành công"
+"lastOnline" = "Lần online gần nhất"
 "getVersion" = "Lấy phiên bản"
 "install" = "Cài đặt"
 "clients" = "Các khách hàng"
@@ -70,6 +71,20 @@
 "emptyBalancersDesc" = "Không có bộ cân bằng tải nào được thêm."
 "emptyReverseDesc" = "Không có proxy ngược nào được thêm."
 "somethingWentWrong" = "Đã xảy ra lỗi"
+
+[subscription]
+"title" = "Thông tin đăng ký"
+"subId" = "ID đăng ký"
+"status" = "Trạng thái"
+"downloaded" = "Đã tải xuống"
+"uploaded" = "Đã tải lên"
+"expiry" = "Hết hạn"
+"totalQuota" = "Tổng hạn mức"
+"individualLinks" = "Liên kết riêng lẻ"
+"active" = "Hoạt động"
+"inactive" = "Không hoạt động"
+"unlimited" = "Không giới hạn"
+"noExpiry" = "Không hết hạn"
 
 [menu]
 "theme" = "Chủ đề"
@@ -229,6 +244,11 @@
 "exportInbound" = "Xuất nhập khẩu"
 "import" = "Nhập"
 "importInbound" = "Nhập inbound"
+"periodicTrafficResetTitle" = "Đặt lại lưu lượng"
+"periodicTrafficResetDesc" = "Tự động đặt lại bộ đếm lưu lượng theo khoảng thời gian xác định"
+"trafficCoefficient" = "Hệ số lưu lượng"
+"trafficCoefficientDesc" = "Hệ số nhân lưu lượng cho inbound này. 0 = sử dụng hệ số toàn cục."
+"lastReset" = "Đặt lại lần cuối"
 
 [pages.client]
 "add" = "Thêm người dùng"
@@ -248,6 +268,12 @@
 "renew" = "Tự động gia hạn"
 "renewDesc" = "Tự động gia hạn sau khi hết hạn. (0 = tắt)(đơn vị: ngày)"
 
+[pages.inbounds.periodicTrafficReset]
+"never" = "Không bao giờ"
+"daily" = "Hàng ngày"
+"weekly" = "Hàng tuần"
+"monthly" = "Hàng tháng"
+
 [pages.inbounds.toasts]
 "obtain" = "Nhận"
 "updateSuccess" = "Cập nhật thành công"
@@ -265,7 +291,8 @@
 "resetInboundClientTrafficSuccess" = "Đã đặt lại lưu lượng"
 "trafficGetError" = "Lỗi khi lấy thông tin lưu lượng"
 "getNewX25519CertError" = "Lỗi khi lấy chứng chỉ X25519."
-"getNewmldsa65Error" = "Lỗi khi lấy chúng tôi mldsa65."
+"getNewmldsa65Error" = "Lỗi khi lấy chứng chỉ mldsa65."
+"getNewVlessEncError" = "Lỗi khi lấy chứng chỉ VlessEnc."
 
 [pages.inbounds.stream.general]
 "request" = "Lời yêu cầu"
@@ -339,6 +366,8 @@
 "expireTimeDiffDesc" = "Nhận thông báo về việc hết hạn tài khoản trước ngưỡng này (đơn vị: ngày)"
 "trafficDiff" = "Ngưỡng lưu lượng cho thông báo"
 "trafficDiffDesc" = "Nhận thông báo về việc cạn kiệt lưu lượng trước khi đạt đến ngưỡng này (đơn vị: GB)"
+"trafficCoefficient" = "Hệ số lưu lượng"
+"trafficCoefficientDesc" = "Hệ số nhân lưu lượng toàn cục cho tất cả inbound. (vd: 2 nghĩa là 1 GB thực = 2 GB tính. Mặc định: 1)"
 "tgNotifyCpu" = "Ngưỡng cảnh báo tỷ lệ CPU"
 "tgNotifyCpuDesc" = "Nhận thông báo nếu tỷ lệ sử dụng CPU vượt quá ngưỡng này (đơn vị: %)"
 "timeZone" = "Múi giờ"
@@ -346,8 +375,19 @@
 "subSettings" = "Gói đăng ký"
 "subEnable" = "Bật dịch vụ"
 "subEnableDesc" = "Tính năng gói đăng ký với cấu hình riêng"
+"subJsonEnable" = "Bật/Tắt điểm cuối đăng ký JSON độc lập."
 "subTitle" = "Tiêu đề Đăng ký"
 "subTitleDesc" = "Tiêu đề hiển thị trong ứng dụng VPN"
+"subSupportUrl" = "URL Hỗ trợ"
+"subSupportUrlDesc" = "Liên kết hỗ trợ kỹ thuật hiển thị trong ứng dụng VPN"
+"subProfileUrl" = "URL Hồ sơ"
+"subProfileUrlDesc" = "Liên kết đến trang web của bạn hiển thị trong ứng dụng VPN"
+"subAnnounce" = "Thông báo"
+"subAnnounceDesc" = "Văn bản thông báo hiển thị trong ứng dụng VPN"
+"subEnableRouting" = "Bật định tuyến"
+"subEnableRoutingDesc" = "Cài đặt toàn cục để bật định tuyến trong ứng dụng khách VPN. (Chỉ dành cho Happ)"
+"subRoutingRules" = "Quy tắc định tuyến"
+"subRoutingRulesDesc" = "Quy tắc định tuyến toàn cầu cho client VPN. (Chỉ dành cho Happ)"
 "subListen" = "Listening IP"
 "subListenDesc" = "Mặc định để trống để nghe tất cả các IP"
 "subPort" = "Cổng gói đăng ký"
@@ -505,6 +545,12 @@
 "psk" = "Khóa chia sẻ"
 "domainStrategy" = "Chiến lược tên miền"
 
+[pages.xray.tun]
+"nameDesc" = "Tên của giao diện TUN. Giá trị mặc định là 'xray0'"
+"mtuDesc" = "Đơn vị Truyền Tối đa. Kích thước tối đa của các gói dữ liệu. Giá trị mặc định là 1500"
+"userLevel" = "Mức Người Dùng"
+"userLevelDesc" = "Tất cả các kết nối được thực hiện thông qua inbound này sẽ sử dụng mức người dùng này. Giá trị mặc định là 0"
+
 [pages.xray.dns]
 "enable" = "Kích hoạt DNS"
 "enableDesc" = "Kích hoạt máy chủ DNS tích hợp"
@@ -518,6 +564,8 @@
 "disableFallbackDesc" = "Tắt các truy vấn DNS Fallback"
 "disableFallbackIfMatch" = "Tắt Fallback Nếu Khớp"
 "disableFallbackIfMatchDesc" = "Tắt các truy vấn DNS Fallback khi danh sách tên miền khớp của máy chủ DNS được kích hoạt"
+"enableParallelQuery" = "Bật Truy vấn Song song"
+"enableParallelQueryDesc" = "Bật truy vấn DNS song song đến nhiều máy chủ để phân giải nhanh hơn"
 "strategy" = "Chiến lược truy vấn"
 "strategyDesc" = "Chiến lược tổng thể để phân giải tên miền"
 "add" = "Thêm máy chủ"
@@ -637,6 +685,7 @@
 "active" = "💡 Đang hoạt động: {{ .Enable }}\r\n"
 "enabled" = "🚨 Đã bật: {{ .Enable }}\r\n"
 "online" = "🌐 Trạng thái kết nối: {{ .Status }}\r\n"
+"lastOnline" = "🔙 Lần online gần nhất: {{ .Time }}\r\n"
 "email" = "📧 Email: {{ .Email }}\r\n"
 "upload" = "🔼 Tải lên: ↑{{ .Upload }}\r\n"
 "download" = "🔽 Tải xuống: ↓{{ .Download }}\r\n"
@@ -662,9 +711,9 @@
 "inbound_client_data_id" = "🔄 Kết nối vào: {{ .InboundRemark }}\n\n🔑 ID: {{ .ClientId }}\n📧 Email: {{ .ClientEmail }}\n📊 Dung lượng: {{ .ClientTraffic }}\n📅 Ngày hết hạn: {{ .ClientExp }}\n🌐 Giới hạn IP: {{ .IpLimit }}\n💬 Ghi chú: {{ .ClientComment }}\n\nBây giờ bạn có thể thêm khách hàng vào inbound!"
 "inbound_client_data_pass" = "🔄 Kết nối vào: {{ .InboundRemark }}\n\n🔑 Mật khẩu: {{ .ClientPass }}\n📧 Email: {{ .ClientEmail }}\n📊 Dung lượng: {{ .ClientTraffic }}\n📅 Ngày hết hạn: {{ .ClientExp }}\n🌐 Giới hạn IP: {{ .IpLimit }}\n💬 Ghi chú: {{ .ClientComment }}\n\nBây giờ bạn có thể thêm khách hàng vào inbound!"
 "cancel" = "❌ Quá trình đã bị hủy! \n\nBạn có thể bắt đầu lại bất cứ lúc nào bằng cách nhập /start. 🔄"
-"error_add_client"  = "⚠️ Lỗi:\n\n {{ .error }}"
-"using_default_value"  = "Được rồi, tôi sẽ sử dụng giá trị mặc định. 😊"
-"incorrect_input" ="Dữ liệu bạn nhập không hợp lệ.\nCác chuỗi phải liền mạch và không có dấu cách.\nVí dụ đúng: aaaaaa\nVí dụ sai: aaa aaa 🚫"
+"error_add_client" = "⚠️ Lỗi:\n\n {{ .error }}"
+"using_default_value" = "Được rồi, tôi sẽ sử dụng giá trị mặc định. 😊"
+"incorrect_input" = "Dữ liệu bạn nhập không hợp lệ.\nCác chuỗi phải liền mạch và không có dấu cách.\nVí dụ đúng: aaaaaa\nVí dụ sai: aaa aaa 🚫"
 "AreYouSure" = "Bạn có chắc không? 🤔"
 "SuccessResetTraffic" = "📧 Email: {{ .ClientEmail }}\n🏁 Kết quả: ✅ Thành công"
 "FailedResetTraffic" = "📧 Email: {{ .ClientEmail }}\n🏁 Kết quả: ❌ Thất bại \n\n🛠️ Lỗi: [ {{ .ErrorMessage }} ]"

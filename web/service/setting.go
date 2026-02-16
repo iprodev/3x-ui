@@ -10,14 +10,14 @@ import (
 	"strings"
 	"time"
 
-	"x-ui/database"
-	"x-ui/database/model"
-	"x-ui/logger"
-	"x-ui/util/common"
-	"x-ui/util/random"
-	"x-ui/util/reflect_util"
-	"x-ui/web/entity"
-	"x-ui/xray"
+	"github.com/iprodev/3x-ui/v2/database"
+	"github.com/iprodev/3x-ui/v2/database/model"
+	"github.com/iprodev/3x-ui/v2/logger"
+	"github.com/iprodev/3x-ui/v2/util/common"
+	"github.com/iprodev/3x-ui/v2/util/random"
+	"github.com/iprodev/3x-ui/v2/util/reflect_util"
+	"github.com/iprodev/3x-ui/v2/web/entity"
+	"github.com/iprodev/3x-ui/v2/xray"
 )
 
 //go:embed config.json
@@ -33,9 +33,10 @@ var defaultValueMap = map[string]string{
 	"secret":                      random.Seq(32),
 	"webBasePath":                 "/",
 	"sessionMaxAge":               "360",
-	"pageSize":                    "50",
+	"pageSize":                    "25",
 	"expireDiff":                  "0",
 	"trafficDiff":                 "0",
+	"trafficCoefficient":          "1",
 	"remarkModel":                 "-ieo",
 	"timeLocation":                "Local",
 	"tgBotEnable":                 "false",
@@ -50,8 +51,14 @@ var defaultValueMap = map[string]string{
 	"tgLang":                      "en-US",
 	"twoFactorEnable":             "false",
 	"twoFactorToken":              "",
-	"subEnable":                   "false",
+	"subEnable":                   "true",
+	"subJsonEnable":               "false",
 	"subTitle":                    "",
+	"subSupportUrl":               "",
+	"subProfileUrl":               "",
+	"subAnnounce":                 "",
+	"subEnableRouting":            "true",
+	"subRoutingRules":             "",
 	"subListen":                   "",
 	"subPort":                     "2096",
 	"subPath":                     "/sub/",
@@ -72,9 +79,31 @@ var defaultValueMap = map[string]string{
 	"warp":                        "",
 	"externalTrafficInformEnable": "false",
 	"externalTrafficInformURI":    "",
-	"trafficCoefficient":          "1",
+	// LDAP defaults
+	"ldapEnable":            "false",
+	"ldapHost":              "",
+	"ldapPort":              "389",
+	"ldapUseTLS":            "false",
+	"ldapBindDN":            "",
+	"ldapPassword":          "",
+	"ldapBaseDN":            "",
+	"ldapUserFilter":        "(objectClass=person)",
+	"ldapUserAttr":          "mail",
+	"ldapVlessField":        "vless_enabled",
+	"ldapSyncCron":          "@every 1m",
+	"ldapFlagField":         "",
+	"ldapTruthyValues":      "true,1,yes,on",
+	"ldapInvertFlag":        "false",
+	"ldapInboundTags":       "",
+	"ldapAutoCreate":        "false",
+	"ldapAutoDelete":        "false",
+	"ldapDefaultTotalGB":    "0",
+	"ldapDefaultExpiryDays": "0",
+	"ldapDefaultLimitIP":    "0",
 }
 
+// SettingService provides business logic for application settings management.
+// It handles configuration storage, retrieval, and validation for all system settings.
 type SettingService struct{}
 
 func (s *SettingService) GetDefaultJsonConfig() (any, error) {
@@ -134,11 +163,11 @@ func (s *SettingService) GetAllSetting() (*entity.AllSetting, error) {
 		case bool:
 			fieldV.SetBool(value == "true")
 		case float64:
-			n, err := strconv.ParseFloat(value, 64)
+			f, err := strconv.ParseFloat(value, 64)
 			if err != nil {
 				return err
 			}
-			fieldV.SetFloat(n)
+			fieldV.SetFloat(f)
 		default:
 			return common.NewErrorf("unknown field %v type %v", key, t)
 		}
@@ -373,6 +402,18 @@ func (s *SettingService) GetTrafficDiff() (int, error) {
 	return s.getInt("trafficDiff")
 }
 
+func (s *SettingService) GetTrafficCoefficient() (float64, error) {
+	str, err := s.getString("trafficCoefficient")
+	if err != nil {
+		return 1, err
+	}
+	val, err := strconv.ParseFloat(str, 64)
+	if err != nil || val <= 0 {
+		return 1, nil
+	}
+	return val, nil
+}
+
 func (s *SettingService) GetSessionMaxAge() (int, error) {
 	return s.getInt("sessionMaxAge")
 }
@@ -434,8 +475,32 @@ func (s *SettingService) GetSubEnable() (bool, error) {
 	return s.getBool("subEnable")
 }
 
+func (s *SettingService) GetSubJsonEnable() (bool, error) {
+	return s.getBool("subJsonEnable")
+}
+
 func (s *SettingService) GetSubTitle() (string, error) {
 	return s.getString("subTitle")
+}
+
+func (s *SettingService) GetSubSupportUrl() (string, error) {
+	return s.getString("subSupportUrl")
+}
+
+func (s *SettingService) GetSubProfileUrl() (string, error) {
+	return s.getString("subProfileUrl")
+}
+
+func (s *SettingService) GetSubAnnounce() (string, error) {
+	return s.getString("subAnnounce")
+}
+
+func (s *SettingService) GetSubEnableRouting() (bool, error) {
+	return s.getBool("subEnableRouting")
+}
+
+func (s *SettingService) GetSubRoutingRules() (string, error) {
+	return s.getString("subRoutingRules")
 }
 
 func (s *SettingService) GetSubListen() (string, error) {
@@ -458,8 +523,16 @@ func (s *SettingService) GetSubDomain() (string, error) {
 	return s.getString("subDomain")
 }
 
+func (s *SettingService) SetSubCertFile(subCertFile string) error {
+	return s.setString("subCertFile", subCertFile)
+}
+
 func (s *SettingService) GetSubCertFile() (string, error) {
 	return s.getString("subCertFile")
+}
+
+func (s *SettingService) SetSubKeyFile(subKeyFile string) error {
+	return s.setString("subKeyFile", subKeyFile)
 }
 
 func (s *SettingService) GetSubKeyFile() (string, error) {
@@ -518,18 +591,6 @@ func (s *SettingService) SetWarp(data string) error {
 	return s.setString("warp", data)
 }
 
-func (s *SettingService) getFloat64(key string) (float64, error) {
-	str, err := s.getString(key)
-	if err != nil {
-		return 0, err
-	}
-	return strconv.ParseFloat(str, 64)
-}
-
-func (s *SettingService) GetTrafficCoefficient() (float64, error) {
-	return s.getFloat64("trafficCoefficient")
-}
-
 func (s *SettingService) GetExternalTrafficInformEnable() (bool, error) {
 	return s.getBool("externalTrafficInformEnable")
 }
@@ -552,6 +613,87 @@ func (s *SettingService) GetIpLimitEnable() (bool, error) {
 		return false, err
 	}
 	return (accessLogPath != "none" && accessLogPath != ""), nil
+}
+
+// LDAP exported getters
+func (s *SettingService) GetLdapEnable() (bool, error) {
+	return s.getBool("ldapEnable")
+}
+
+func (s *SettingService) GetLdapHost() (string, error) {
+	return s.getString("ldapHost")
+}
+
+func (s *SettingService) GetLdapPort() (int, error) {
+	return s.getInt("ldapPort")
+}
+
+func (s *SettingService) GetLdapUseTLS() (bool, error) {
+	return s.getBool("ldapUseTLS")
+}
+
+func (s *SettingService) GetLdapBindDN() (string, error) {
+	return s.getString("ldapBindDN")
+}
+
+func (s *SettingService) GetLdapPassword() (string, error) {
+	return s.getString("ldapPassword")
+}
+
+func (s *SettingService) GetLdapBaseDN() (string, error) {
+	return s.getString("ldapBaseDN")
+}
+
+func (s *SettingService) GetLdapUserFilter() (string, error) {
+	return s.getString("ldapUserFilter")
+}
+
+func (s *SettingService) GetLdapUserAttr() (string, error) {
+	return s.getString("ldapUserAttr")
+}
+
+func (s *SettingService) GetLdapVlessField() (string, error) {
+	return s.getString("ldapVlessField")
+}
+
+func (s *SettingService) GetLdapSyncCron() (string, error) {
+	return s.getString("ldapSyncCron")
+}
+
+func (s *SettingService) GetLdapFlagField() (string, error) {
+	return s.getString("ldapFlagField")
+}
+
+func (s *SettingService) GetLdapTruthyValues() (string, error) {
+	return s.getString("ldapTruthyValues")
+}
+
+func (s *SettingService) GetLdapInvertFlag() (bool, error) {
+	return s.getBool("ldapInvertFlag")
+}
+
+func (s *SettingService) GetLdapInboundTags() (string, error) {
+	return s.getString("ldapInboundTags")
+}
+
+func (s *SettingService) GetLdapAutoCreate() (bool, error) {
+	return s.getBool("ldapAutoCreate")
+}
+
+func (s *SettingService) GetLdapAutoDelete() (bool, error) {
+	return s.getBool("ldapAutoDelete")
+}
+
+func (s *SettingService) GetLdapDefaultTotalGB() (int, error) {
+	return s.getInt("ldapDefaultTotalGB")
+}
+
+func (s *SettingService) GetLdapDefaultExpiryDays() (int, error) {
+	return s.getInt("ldapDefaultExpiryDays")
+}
+
+func (s *SettingService) GetLdapDefaultLimitIP() (int, error) {
+	return s.getInt("ldapDefaultLimitIP")
 }
 
 func (s *SettingService) UpdateAllSetting(allSetting *entity.AllSetting) error {
@@ -587,19 +729,21 @@ func (s *SettingService) GetDefaultXrayConfig() (any, error) {
 func (s *SettingService) GetDefaultSettings(host string) (any, error) {
 	type settingFunc func() (any, error)
 	settings := map[string]settingFunc{
-		"expireDiff":    func() (any, error) { return s.GetExpireDiff() },
-		"trafficDiff":   func() (any, error) { return s.GetTrafficDiff() },
-		"pageSize":      func() (any, error) { return s.GetPageSize() },
-		"defaultCert":   func() (any, error) { return s.GetCertFile() },
-		"defaultKey":    func() (any, error) { return s.GetKeyFile() },
-		"tgBotEnable":   func() (any, error) { return s.GetTgbotEnabled() },
-		"subEnable":     func() (any, error) { return s.GetSubEnable() },
-		"subTitle":      func() (any, error) { return s.GetSubTitle() },
-		"subURI":        func() (any, error) { return s.GetSubURI() },
-		"subJsonURI":    func() (any, error) { return s.GetSubJsonURI() },
-		"remarkModel":   func() (any, error) { return s.GetRemarkModel() },
-		"datepicker":    func() (any, error) { return s.GetDatepicker() },
-		"ipLimitEnable": func() (any, error) { return s.GetIpLimitEnable() },
+		"expireDiff":         func() (any, error) { return s.GetExpireDiff() },
+		"trafficDiff":        func() (any, error) { return s.GetTrafficDiff() },
+		"trafficCoefficient": func() (any, error) { return s.GetTrafficCoefficient() },
+		"pageSize":           func() (any, error) { return s.GetPageSize() },
+		"defaultCert":        func() (any, error) { return s.GetCertFile() },
+		"defaultKey":         func() (any, error) { return s.GetKeyFile() },
+		"tgBotEnable":        func() (any, error) { return s.GetTgbotEnabled() },
+		"subEnable":          func() (any, error) { return s.GetSubEnable() },
+		"subJsonEnable":      func() (any, error) { return s.GetSubJsonEnable() },
+		"subTitle":           func() (any, error) { return s.GetSubTitle() },
+		"subURI":             func() (any, error) { return s.GetSubURI() },
+		"subJsonURI":         func() (any, error) { return s.GetSubJsonURI() },
+		"remarkModel":        func() (any, error) { return s.GetRemarkModel() },
+		"datepicker":         func() (any, error) { return s.GetDatepicker() },
+		"ipLimitEnable":      func() (any, error) { return s.GetIpLimitEnable() },
 	}
 
 	result := make(map[string]any)
@@ -612,7 +756,14 @@ func (s *SettingService) GetDefaultSettings(host string) (any, error) {
 		result[key] = value
 	}
 
-	if result["subEnable"].(bool) && (result["subURI"].(string) == "" || result["subJsonURI"].(string) == "") {
+	subEnable := result["subEnable"].(bool)
+	subJsonEnable := false
+	if v, ok := result["subJsonEnable"]; ok {
+		if b, ok2 := v.(bool); ok2 {
+			subJsonEnable = b
+		}
+	}
+	if (subEnable && result["subURI"].(string) == "") || (subJsonEnable && result["subJsonURI"].(string) == "") {
 		subURI := ""
 		subTitle, _ := s.GetSubTitle()
 		subPort, _ := s.GetSubPort()
@@ -638,13 +789,13 @@ func (s *SettingService) GetDefaultSettings(host string) (any, error) {
 		} else {
 			subURI += fmt.Sprintf("%s:%d", subDomain, subPort)
 		}
-		if result["subURI"].(string) == "" {
+		if subEnable && result["subURI"].(string) == "" {
 			result["subURI"] = subURI + subPath
 		}
 		if result["subTitle"].(string) == "" {
 			result["subTitle"] = subTitle
 		}
-		if result["subJsonURI"].(string) == "" {
+		if subJsonEnable && result["subJsonURI"].(string) == "" {
 			result["subJsonURI"] = subURI + subJsonPath
 		}
 	}

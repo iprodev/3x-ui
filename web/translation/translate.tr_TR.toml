@@ -50,6 +50,7 @@
 "fail" = "Başarısız"
 "comment" = "Yorum"
 "success" = "Başarılı"
+"lastOnline" = "Son çevrimiçi"
 "getVersion" = "Sürümü Al"
 "install" = "Yükle"
 "clients" = "Müşteriler"
@@ -71,6 +72,20 @@
 "emptyReverseDesc" = "Eklenmiş ters proxy yok."
 "somethingWentWrong" = "Bir şeyler yanlış gitti"
 
+[subscription]
+"title" = "Abonelik Bilgisi"
+"subId" = "Abonelik Kimliği"
+"status" = "Durum"
+"downloaded" = "İndirilen"
+"uploaded" = "Yüklenen"
+"expiry" = "Son Kullanma"
+"totalQuota" = "Toplam Kota"
+"individualLinks" = "Bireysel Bağlantılar"
+"active" = "Aktif"
+"inactive" = "Pasif"
+"unlimited" = "Sınırsız"
+"noExpiry" = "Süresiz"
+
 [menu]
 "theme" = "Tema"
 "dark" = "Koyu"
@@ -91,7 +106,7 @@
 "invalidFormData" = "Girdi verisi formatı geçersiz."
 "emptyUsername" = "Kullanıcı adı gerekli"
 "emptyPassword" = "Şifre gerekli"
-"wrongUsernameOrPassword" = "Geçersiz kullanıcı adı, şifre veya iki adımlı doğrulama kodu."  
+"wrongUsernameOrPassword" = "Geçersiz kullanıcı adı, şifre veya iki adımlı doğrulama kodu."
 "successLogin" = "Hesabınıza başarıyla giriş yaptınız."
 
 [pages.index]
@@ -229,6 +244,11 @@
 "exportInbound" = "Geleni Dışa Aktar"
 "import" = "İçe Aktar"
 "importInbound" = "Bir Gelen İçe Aktar"
+"periodicTrafficResetTitle" = "Trafik Sıfırlama"
+"periodicTrafficResetDesc" = "Belirtilen aralıklarla trafik sayacını otomatik olarak sıfırla"
+"trafficCoefficient" = "Trafik Katsayısı"
+"trafficCoefficientDesc" = "Bu gelen bağlantı için trafik çarpanı. 0 = genel katsayıyı kullan."
+"lastReset" = "Son Sıfırlama"
 
 [pages.client]
 "add" = "Müşteri Ekle"
@@ -248,6 +268,12 @@
 "renew" = "Otomatik Yenile"
 "renewDesc" = "Süresi dolduktan sonra otomatik yenileme. (0 = devre dışı)(birim: gün)"
 
+[pages.inbounds.periodicTrafficReset]
+"never" = "Asla"
+"daily" = "Günlük"
+"weekly" = "Haftalık"
+"monthly" = "Aylık"
+
 [pages.inbounds.toasts]
 "obtain" = "Elde Et"
 "updateSuccess" = "Güncelleme başarılı oldu"
@@ -266,6 +292,7 @@
 "trafficGetError" = "Trafik bilgisi alınırken hata oluştu"
 "getNewX25519CertError" = "X25519 sertifikası alınırken hata oluştu."
 "getNewmldsa65Error" = "mldsa65 sertifikası alınırken hata oluştu."
+"getNewVlessEncError" = "VlessEnc sertifikası alınırken hata oluştu."
 
 [pages.inbounds.stream.general]
 "request" = "İstek"
@@ -339,6 +366,8 @@
 "expireTimeDiffDesc" = "Bu eşik seviyesine ulaşıldığında son kullanma tarihi hakkında bildirim alın. (birim: gün)"
 "trafficDiff" = "Trafik Sınırı Bildirimi"
 "trafficDiffDesc" = "Bu eşik seviyesine ulaşıldığında trafik sınırı hakkında bildirim alın. (birim: GB)"
+"trafficCoefficient" = "Trafik Katsayısı"
+"trafficCoefficientDesc" = "Tüm gelen bağlantılar için genel trafik çarpanı. (ör. 2, 1 GB gerçek = 2 GB hesaplanan anlamına gelir. Varsayılan: 1)"
 "tgNotifyCpu" = "CPU Yükü Bildirimi"
 "tgNotifyCpuDesc" = "CPU yükü bu eşik seviyesini aşarsa bildirim alın. (birim: %)"
 "timeZone" = "Saat Dilimi"
@@ -346,8 +375,19 @@
 "subSettings" = "Abonelik"
 "subEnable" = "Abonelik Hizmetini Etkinleştir"
 "subEnableDesc" = "Abonelik hizmetini etkinleştirir."
+"subJsonEnable" = "JSON abonelik uç noktasını bağımsız olarak Etkinleştir/Devre Dışı bırak."
 "subTitle" = "Abonelik Başlığı"
 "subTitleDesc" = "VPN istemcisinde gösterilen başlık"
+"subSupportUrl" = "Destek URL'si"
+"subSupportUrlDesc" = "VPN istemcisinde gösterilen teknik destek bağlantısı"
+"subProfileUrl" = "Profil URL'si"
+"subProfileUrlDesc" = "VPN istemcisinde görüntülenen web sitenize giden bağlantı"
+"subAnnounce" = "Duyuru"
+"subAnnounceDesc" = "VPN istemcisinde görüntülenen duyuru metni"
+"subEnableRouting" = "Yönlendirmeyi etkinleştir"
+"subEnableRoutingDesc" = "VPN istemcisinde yönlendirmeyi etkinleştirmek için genel ayar. (Yalnızca Happ için)"
+"subRoutingRules" = "Yönlendirme kuralları"
+"subRoutingRulesDesc" = "VPN istemcisi için genel yönlendirme kuralları. (Yalnızca Happ için)"
 "subListen" = "Dinleme IP"
 "subListenDesc" = "Abonelik hizmeti için IP adresi. (tüm IP'leri dinlemek için boş bırakın)"
 "subPort" = "Dinleme Portu"
@@ -505,6 +545,12 @@
 "psk" = "Ön Paylaşılan Anahtar"
 "domainStrategy" = "Alan Adı Stratejisi"
 
+[pages.xray.tun]
+"nameDesc" = "TUN arabiriminin adı. Varsayılan değer 'xray0'dir"
+"mtuDesc" = "Maksimum İletim Birimi. Veri paketlerinin maksimum boyutu. Varsayılan değer 1500'dür"
+"userLevel" = "Kullanıcı Seviyesi"
+"userLevelDesc" = "Bu giriş yoluyla yapılan tüm bağlantılar bu kullanıcı seviyesini kullanacaktır. Varsayılan değer 0'dır"
+
 [pages.xray.dns]
 "enable" = "DNS'yi Etkinleştir"
 "enableDesc" = "Dahili DNS sunucusunu etkinleştir"
@@ -518,6 +564,8 @@
 "disableFallbackDesc" = "Yedek DNS sorgularını devre dışı bırakır"
 "disableFallbackIfMatch" = "Eşleşirse Yedeklemeyi Devre Dışı Bırak"
 "disableFallbackIfMatchDesc" = "DNS sunucusunun eşleşen alan adı listesi vurulduğunda yedek DNS sorgularını devre dışı bırakır"
+"enableParallelQuery" = "Paralel Sorguyu Etkinleştir"
+"enableParallelQueryDesc" = "Daha hızlı çözümleme için birden fazla sunucuya paralel DNS sorgularını etkinleştir"
 "strategy" = "Sorgu Stratejisi"
 "strategyDesc" = "Alan adlarını çözmek için genel strateji"
 "add" = "Sunucu Ekle"
@@ -539,9 +587,9 @@
 
 [pages.settings.security]
 "admin" = "Yönetici kimlik bilgileri"
-"twoFactor" = "İki adımlı doğrulama"  
-"twoFactorEnable" = "2FA'yı Etkinleştir"  
-"twoFactorEnableDesc" = "Daha fazla güvenlik için ek bir doğrulama katmanı ekler."  
+"twoFactor" = "İki adımlı doğrulama"
+"twoFactorEnable" = "2FA'yı Etkinleştir"
+"twoFactorEnableDesc" = "Daha fazla güvenlik için ek bir doğrulama katmanı ekler."
 "twoFactorModalSetTitle" = "İki adımlı doğrulamayı etkinleştir"
 "twoFactorModalDeleteTitle" = "İki adımlı doğrulamayı devre dışı bırak"
 "twoFactorModalSteps" = "İki adımlı doğrulamayı ayarlamak için şu adımları izleyin:"
@@ -637,6 +685,7 @@
 "active" = "💡 Aktif: {{ .Enable }}\r\n"
 "enabled" = "🚨 Etkin: {{ .Enable }}\r\n"
 "online" = "🌐 Bağlantı durumu: {{ .Status }}\r\n"
+"lastOnline" = "🔙 Son çevrimiçi: {{ .Time }}\r\n"
 "email" = "📧 E-posta: {{ .Email }}\r\n"
 "upload" = "🔼 Yükleme: ↑{{ .Upload }}\r\n"
 "download" = "🔽 İndirme: ↓{{ .Download }}\r\n"
@@ -662,9 +711,9 @@
 "inbound_client_data_id" = "🔄 Giriş: {{ .InboundRemark }}\n\n🔑 Kimlik: {{ .ClientId }}\n📧 E-posta: {{ .ClientEmail }}\n📊 Trafik: {{ .ClientTraffic }}\n📅 Bitiş Tarihi: {{ .ClientExp }}\n🌐 IP Sınırı: {{ .IpLimit }}\n💬 Yorum: {{ .ClientComment }}\n\nArtık bu müşteriyi girişe ekleyebilirsin!"
 "inbound_client_data_pass" = "🔄 Giriş: {{ .InboundRemark }}\n\n🔑 Şifre: {{ .ClientPass }}\n📧 E-posta: {{ .ClientEmail }}\n📊 Trafik: {{ .ClientTraffic }}\n📅 Bitiş Tarihi: {{ .ClientExp }}\n🌐 IP Sınırı: {{ .IpLimit }}\n💬 Yorum: {{ .ClientComment }}\n\nArtık bu müşteriyi girişe ekleyebilirsin!"
 "cancel" = "❌ İşlem iptal edildi! \n\nİstediğiniz zaman /start ile yeniden başlayabilirsiniz. 🔄"
-"error_add_client"  = "⚠️ Hata:\n\n {{ .error }}"
-"using_default_value"  = "Tamam, varsayılan değeri kullanacağım. 😊"
-"incorrect_input" ="Girdiğiniz değer geçerli değil.\nKelime öbekleri boşluk olmadan devam etmelidir.\nDoğru örnek: aaaaaa\nYanlış örnek: aaa aaa 🚫"
+"error_add_client" = "⚠️ Hata:\n\n {{ .error }}"
+"using_default_value" = "Tamam, varsayılan değeri kullanacağım. 😊"
+"incorrect_input" = "Girdiğiniz değer geçerli değil.\nKelime öbekleri boşluk olmadan devam etmelidir.\nDoğru örnek: aaaaaa\nYanlış örnek: aaa aaa 🚫"
 "AreYouSure" = "Emin misin? 🤔"
 "SuccessResetTraffic" = "📧 E-posta: {{ .ClientEmail }}\n🏁 Sonuç: ✅ Başarılı"
 "FailedResetTraffic" = "📧 E-posta: {{ .ClientEmail }}\n🏁 Sonuç: ❌ Başarısız \n\n🛠️ Hata: [ {{ .ErrorMessage }} ]"

@@ -50,6 +50,7 @@
 "fail" = "失敗"
 "comment" = "評論"
 "success" = "成功"
+"lastOnline" = "上次上線"
 "getVersion" = "獲取版本"
 "install" = "安裝"
 "clients" = "客戶端"
@@ -71,6 +72,20 @@
 "emptyReverseDesc" = "未添加反向代理。"
 "somethingWentWrong" = "發生錯誤"
 
+[subscription]
+"title" = "訂閱資訊"
+"subId" = "訂閱 ID"
+"status" = "狀態"
+"downloaded" = "已下載"
+"uploaded" = "已上傳"
+"expiry" = "到期"
+"totalQuota" = "總配額"
+"individualLinks" = "個別連結"
+"active" = "啟用"
+"inactive" = "停用"
+"unlimited" = "無限制"
+"noExpiry" = "無到期"
+
 [menu]
 "theme" = "主題"
 "dark" = "深色"
@@ -91,7 +106,7 @@
 "invalidFormData" = "資料格式錯誤"
 "emptyUsername" = "請輸入使用者名稱"
 "emptyPassword" = "請輸入密碼"
-"wrongUsernameOrPassword" = "用戶名、密碼或雙重驗證碼無效。"  
+"wrongUsernameOrPassword" = "用戶名、密碼或雙重驗證碼無效。"
 "successLogin" = "您已成功登入您的帳戶。"
 
 [pages.index]
@@ -227,8 +242,13 @@
 "same" = "相同"
 "inboundData" = "入站資料"
 "exportInbound" = "匯出入站規則"
-"import"="匯入"
+"import" = "匯入"
 "importInbound" = "匯入入站規則"
+"periodicTrafficResetTitle" = "流量重置"
+"periodicTrafficResetDesc" = "按指定間隔自動重置流量計數器"
+"trafficCoefficient" = "流量係數"
+"trafficCoefficientDesc" = "此入站的流量倍率。0 = 使用全局係數。"
+"lastReset" = "上次重置"
 
 [pages.client]
 "add" = "新增客戶端"
@@ -248,6 +268,12 @@
 "renew" = "自動續訂"
 "renewDesc" = "到期後自動續訂。(0 = 禁用)(單位: 天)"
 
+[pages.inbounds.periodicTrafficReset]
+"never" = "從不"
+"daily" = "每日"
+"weekly" = "每週"
+"monthly" = "每月"
+
 [pages.inbounds.toasts]
 "obtain" = "獲取"
 "updateSuccess" = "更新成功"
@@ -266,6 +292,7 @@
 "trafficGetError" = "取得流量資料時發生錯誤"
 "getNewX25519CertError" = "取得X25519憑證時發生錯誤。"
 "getNewmldsa65Error" = "取得mldsa65憑證時發生錯誤。"
+"getNewVlessEncError" = "取得VlessEnc憑證時發生錯誤。"
 
 [pages.inbounds.stream.general]
 "request" = "請求"
@@ -339,6 +366,8 @@
 "expireTimeDiffDesc" = "達到此閾值時，將收到有關到期時間的通知（單位：天）"
 "trafficDiff" = "流量耗盡閾值"
 "trafficDiffDesc" = "達到此閾值時，將收到有關流量耗盡的通知（單位：GB）"
+"trafficCoefficient" = "流量係數"
+"trafficCoefficientDesc" = "所有入站的全局流量倍率。（例如，2 表示 1 GB 實際 = 2 GB 計算。預設值：1）"
 "tgNotifyCpu" = "CPU 負載通知閾值"
 "tgNotifyCpuDesc" = "CPU 負載超過此閾值時，將收到通知（單位：%）"
 "timeZone" = "時區"
@@ -346,8 +375,19 @@
 "subSettings" = "訂閱設定"
 "subEnable" = "啟用訂閱服務"
 "subEnableDesc" = "啟用訂閱服務功能"
+"subJsonEnable" = "獨立啟用/停用 JSON 訂閱端點。"
 "subTitle" = "訂閱標題"
 "subTitleDesc" = "在VPN客戶端中顯示的標題"
+"subSupportUrl" = "支援連結"
+"subSupportUrlDesc" = "VPN 用戶端中顯示的技術支援連結"
+"subProfileUrl" = "個人資料連結"
+"subProfileUrlDesc" = "VPN 用戶端中顯示的網站連結"
+"subAnnounce" = "公告"
+"subAnnounceDesc" = "VPN 用戶端中顯示的公告文字"
+"subEnableRouting" = "啟用路由"
+"subEnableRoutingDesc" = "在 VPN 用戶端中啟用路由的全域設定。（僅限 Happ）"
+"subRoutingRules" = "路由規則"
+"subRoutingRulesDesc" = "VPN 用戶端的全域路由規則。（僅限 Happ）"
 "subListen" = "監聽 IP"
 "subListenDesc" = "訂閱服務監聽的 IP 地址（留空表示監聽所有 IP）"
 "subPort" = "監聽埠"
@@ -505,6 +545,12 @@
 "psk" = "共享金鑰"
 "domainStrategy" = "域策略"
 
+[pages.xray.tun]
+"nameDesc" = "TUN 介面的名稱。預設值為 'xray0'"
+"mtuDesc" = "最大傳輸單元。資料包的最大大小。預設值為 1500"
+"userLevel" = "用戶級別"
+"userLevelDesc" = "通過此入站的所有連接都將使用此用戶級別。預設值為 0"
+
 [pages.xray.dns]
 "enable" = "啟用 DNS"
 "enableDesc" = "啟用內建 DNS 伺服器"
@@ -518,6 +564,8 @@
 "disableFallbackDesc" = "禁用回退DNS查詢"
 "disableFallbackIfMatch" = "匹配時禁用回退"
 "disableFallbackIfMatchDesc" = "當DNS伺服器的匹配域名列表命中時，禁用回退DNS查詢"
+"enableParallelQuery" = "啟用並行查詢"
+"enableParallelQueryDesc" = "啟用並行DNS查詢到多個伺服器以實現更快的解析"
 "strategy" = "查詢策略"
 "strategyDesc" = "解析域名的總體策略"
 "add" = "新增伺服器"
@@ -539,9 +587,9 @@
 
 [pages.settings.security]
 "admin" = "管理員憑證"
-"twoFactor" = "雙重驗證"  
-"twoFactorEnable" = "啟用2FA"  
-"twoFactorEnableDesc" = "增加額外的驗證層以提高安全性。"  
+"twoFactor" = "雙重驗證"
+"twoFactorEnable" = "啟用2FA"
+"twoFactorEnableDesc" = "增加額外的驗證層以提高安全性。"
 "twoFactorModalSetTitle" = "啟用雙重認證"
 "twoFactorModalDeleteTitle" = "停用雙重認證"
 "twoFactorModalSteps" = "要設定雙重認證，請執行以下步驟："
@@ -637,6 +685,7 @@
 "active" = "💡 啟用：{{ .Enable }}\r\n"
 "enabled" = "🚨 已啟用：{{ .Enable }}\r\n"
 "online" = "🌐 連線狀態：{{ .Status }}\r\n"
+"lastOnline" = "🔙 上次上線: {{ .Time }}\r\n"
 "email" = "📧 郵箱：{{ .Email }}\r\n"
 "upload" = "🔼 上傳↑：{{ .Upload }}\r\n"
 "download" = "🔽 下載↓：{{ .Download }}\r\n"
@@ -662,9 +711,9 @@
 "inbound_client_data_id" = "🔄 入站: {{ .InboundRemark }}\n\n🔑 ID: {{ .ClientId }}\n📧 電子郵件: {{ .ClientEmail }}\n📊 流量: {{ .ClientTraffic }}\n📅 到期日: {{ .ClientExp }}\n🌐 IP 限制: {{ .IpLimit }}\n💬 備註: {{ .ClientComment }}\n\n你現在可以將客戶加入入站了！"
 "inbound_client_data_pass" = "🔄 入站: {{ .InboundRemark }}\n\n🔑 密碼: {{ .ClientPass }}\n📧 電子郵件: {{ .ClientEmail }}\n📊 流量: {{ .ClientTraffic }}\n📅 到期日: {{ .ClientExp }}\n🌐 IP 限制: {{ .IpLimit }}\n💬 備註: {{ .ClientComment }}\n\n你現在可以將客戶加入入站了！"
 "cancel" = "❌ 程序已取消！\n\n您可以隨時使用 /start 重新開始。 🔄"
-"error_add_client"  = "⚠️ 錯誤:\n\n {{ .error }}"
-"using_default_value"  = "好的，我會使用預設值。 😊"
-"incorrect_input" ="您的輸入無效。\n短語應連續輸入，不能有空格。\n正確示例: aaaaaa\n錯誤示例: aaa aaa 🚫"
+"error_add_client" = "⚠️ 錯誤:\n\n {{ .error }}"
+"using_default_value" = "好的，我會使用預設值。 😊"
+"incorrect_input" = "您的輸入無效。\n短語應連續輸入，不能有空格。\n正確示例: aaaaaa\n錯誤示例: aaa aaa 🚫"
 "AreYouSure" = "你確定嗎？🤔"
 "SuccessResetTraffic" = "📧 電子郵件: {{ .ClientEmail }}\n🏁 結果: ✅ 成功"
 "FailedResetTraffic" = "📧 電子郵件: {{ .ClientEmail }}\n🏁 結果: ❌ 失敗 \n\n🛠️ 錯誤: [ {{ .ErrorMessage }} ]"

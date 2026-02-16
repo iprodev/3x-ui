@@ -8,7 +8,7 @@ ARG TARGETARCH
 RUN apk --no-cache --update add \
   build-base \
   gcc \
-  wget \
+  curl \
   unzip
 
 COPY . .
@@ -29,7 +29,9 @@ RUN apk add --no-cache --update \
   ca-certificates \
   tzdata \
   fail2ban \
-  bash
+  bash \
+  curl \
+  openssl
 
 COPY --from=builder /app/build/ /app/
 COPY --from=builder /app/DockerEntrypoint.sh /app/
@@ -49,6 +51,7 @@ RUN chmod +x \
   /usr/bin/x-ui
 
 ENV XUI_ENABLE_FAIL2BAN="true"
+EXPOSE 2053
 VOLUME [ "/etc/x-ui" ]
 CMD [ "./x-ui" ]
 ENTRYPOINT [ "/app/DockerEntrypoint.sh" ]

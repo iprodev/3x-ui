@@ -50,6 +50,7 @@
 "fail" = "Falhou"
 "comment" = "Comentário"
 "success" = "Com Sucesso"
+"lastOnline" = "Última vez online"
 "getVersion" = "Obter Versão"
 "install" = "Instalar"
 "clients" = "Clientes"
@@ -71,6 +72,20 @@
 "emptyReverseDesc" = "Nenhum proxy reverso adicionado."
 "somethingWentWrong" = "Algo deu errado"
 
+[subscription]
+"title" = "Informações da assinatura"
+"subId" = "ID da assinatura"
+"status" = "Status"
+"downloaded" = "Baixado"
+"uploaded" = "Enviado"
+"expiry" = "Validade"
+"totalQuota" = "Cota total"
+"individualLinks" = "Links individuais"
+"active" = "Ativo"
+"inactive" = "Inativo"
+"unlimited" = "Ilimitado"
+"noExpiry" = "Sem validade"
+
 [menu]
 "theme" = "Tema"
 "dark" = "Escuro"
@@ -91,12 +106,12 @@
 "invalidFormData" = "O formato dos dados de entrada é inválido."
 "emptyUsername" = "Nome de usuário é obrigatório"
 "emptyPassword" = "Senha é obrigatória"
-"wrongUsernameOrPassword" = "Nome de usuário, senha ou código de dois fatores inválido."  
+"wrongUsernameOrPassword" = "Nome de usuário, senha ou código de dois fatores inválido."
 "successLogin" = "Você entrou na sua conta com sucesso."
 
 [pages.index]
 "title" = "Visão Geral"
-"cpu" = "CPU" 
+"cpu" = "CPU"
 "logicalProcessors" = "Processadores lógicos"
 "frequency" = "Frequência"
 "swap" = "Swap"
@@ -229,6 +244,11 @@
 "exportInbound" = "Exportar Inbound"
 "import" = "Importar"
 "importInbound" = "Importar um Inbound"
+"periodicTrafficResetTitle" = "Reset de Tráfego"
+"periodicTrafficResetDesc" = "Reinicia automaticamente o contador de tráfego em intervalos especificados"
+"trafficCoefficient" = "Coeficiente de Tráfego"
+"trafficCoefficientDesc" = "Multiplicador de tráfego para esta entrada. 0 = usar coeficiente global."
+"lastReset" = "Último Reset"
 
 [pages.client]
 "add" = "Adicionar Cliente"
@@ -248,6 +268,12 @@
 "renew" = "Renovação Automática"
 "renewDesc" = "Renovação automática após expiração. (0 = desativado)(unidade: dia)"
 
+[pages.inbounds.periodicTrafficReset]
+"never" = "Nunca"
+"daily" = "Diariamente"
+"weekly" = "Semanalmente"
+"monthly" = "Mensalmente"
+
 [pages.inbounds.toasts]
 "obtain" = "Obter"
 "updateSuccess" = "A atualização foi bem-sucedida"
@@ -266,6 +292,7 @@
 "trafficGetError" = "Erro ao obter tráfegos"
 "getNewX25519CertError" = "Erro ao obter o certificado X25519."
 "getNewmldsa65Error" = "Erro ao obter o certificado mldsa65."
+"getNewVlessEncError" = "Erro ao obter o certificado VlessEnc."
 
 [pages.inbounds.stream.general]
 "request" = "Requisição"
@@ -339,6 +366,8 @@
 "expireTimeDiffDesc" = "Receba notificações sobre a data de expiração ao atingir esse limite. (unidade: dia)"
 "trafficDiff" = "Notificação de Limite de Tráfego"
 "trafficDiffDesc" = "Receba notificações sobre o limite de tráfego ao atingir esse limite. (unidade: GB)"
+"trafficCoefficient" = "Coeficiente de Tráfego"
+"trafficCoefficientDesc" = "Multiplicador global de tráfego para todas as entradas. (ex. 2 significa 1 GB real = 2 GB contabilizado. Padrão: 1)"
 "tgNotifyCpu" = "Notificação de Carga da CPU"
 "tgNotifyCpuDesc" = "Receba notificações se a carga da CPU ultrapassar esse limite. (unidade: %)"
 "timeZone" = "Fuso Horário"
@@ -346,8 +375,19 @@
 "subSettings" = "Assinatura"
 "subEnable" = "Ativar Serviço de Assinatura"
 "subEnableDesc" = "Ativa o serviço de assinatura."
+"subJsonEnable" = "Ativar/Desativar o endpoint de assinatura JSON de forma independente."
 "subTitle" = "Título da Assinatura"
 "subTitleDesc" = "Título exibido no cliente VPN"
+"subSupportUrl" = "URL de Suporte"
+"subSupportUrlDesc" = "Link de suporte técnico exibido no cliente VPN"
+"subProfileUrl" = "URL de Perfil"
+"subProfileUrlDesc" = "Um link para o seu site exibido no cliente VPN"
+"subAnnounce" = "Anúncio"
+"subAnnounceDesc" = "O texto do anúncio exibido no cliente VPN"
+"subEnableRouting" = "Ativar roteamento"
+"subEnableRoutingDesc" = "Configuração global para habilitar o roteamento no cliente VPN. (Apenas para Happ)"
+"subRoutingRules" = "Regras de roteamento"
+"subRoutingRulesDesc" = "Regras de roteamento globais para o cliente VPN. (Apenas para Happ)"
 "subListen" = "IP de Escuta"
 "subListenDesc" = "O endereço IP para o serviço de assinatura. (deixe em branco para escutar em todos os IPs)"
 "subPort" = "Porta de Escuta"
@@ -505,6 +545,12 @@
 "psk" = "Chave Pré-Compartilhada"
 "domainStrategy" = "Estratégia de Domínio"
 
+[pages.xray.tun]
+"nameDesc" = "O nome da interface TUN. O padrão é 'xray0'"
+"mtuDesc" = "Unidade Máxima de Transmissão. O tamanho máximo dos pacotes de dados. O padrão é 1500"
+"userLevel" = "Nível do Usuário"
+"userLevelDesc" = "Todas as conexões feitas através deste inbound usarão este nível de usuário. O padrão é 0"
+
 [pages.xray.dns]
 "enable" = "Ativar DNS"
 "enableDesc" = "Ativar o servidor DNS integrado"
@@ -518,6 +564,8 @@
 "disableFallbackDesc" = "Desativa consultas DNS de fallback"
 "disableFallbackIfMatch" = "Desativar Fallback Se Corresponder"
 "disableFallbackIfMatchDesc" = "Desativa consultas DNS de fallback quando a lista de domínios correspondentes do servidor DNS é atingida"
+"enableParallelQuery" = "Habilitar Consulta Paralela"
+"enableParallelQueryDesc" = "Habilitar consultas DNS paralelas para múltiplos servidores para resolução mais rápida"
 "strategy" = "Estratégia de Consulta"
 "strategyDesc" = "Estratégia geral para resolver nomes de domínio"
 "add" = "Adicionar Servidor"
@@ -539,9 +587,9 @@
 
 [pages.settings.security]
 "admin" = "Credenciais de administrador"
-"twoFactor" = "Autenticação de dois fatores"  
-"twoFactorEnable" = "Ativar 2FA"  
-"twoFactorEnableDesc" = "Adiciona uma camada extra de autenticação para mais segurança."  
+"twoFactor" = "Autenticação de dois fatores"
+"twoFactorEnable" = "Ativar 2FA"
+"twoFactorEnableDesc" = "Adiciona uma camada extra de autenticação para mais segurança."
 "twoFactorModalSetTitle" = "Ativar autenticação de dois fatores"
 "twoFactorModalDeleteTitle" = "Desativar autenticação de dois fatores"
 "twoFactorModalSteps" = "Para configurar a autenticação de dois fatores, siga alguns passos:"
@@ -637,6 +685,7 @@
 "active" = "💡 Ativo: {{ .Enable }}\r\n"
 "enabled" = "🚨 Ativado: {{ .Enable }}\r\n"
 "online" = "🌐 Status da conexão: {{ .Status }}\r\n"
+"lastOnline" = "🔙 Última vez online: {{ .Time }}\r\n"
 "email" = "📧 Email: {{ .Email }}\r\n"
 "upload" = "🔼 Upload: ↑{{ .Upload }}\r\n"
 "download" = "🔽 Download: ↓{{ .Download }}\r\n"
@@ -662,9 +711,9 @@
 "inbound_client_data_id" = "🔄 Entrada: {{ .InboundRemark }}\n\n🔑 ID: {{ .ClientId }}\n📧 Email: {{ .ClientEmail }}\n📊 Tráfego: {{ .ClientTraffic }}\n📅 Data de expiração: {{ .ClientExp }}\n🌐 Limite de IP: {{ .IpLimit }}\n💬 Comentário: {{ .ClientComment }}\n\nAgora você pode adicionar o cliente à entrada!"
 "inbound_client_data_pass" = "🔄 Entrada: {{ .InboundRemark }}\n\n🔑 Senha: {{ .ClientPass }}\n📧 Email: {{ .ClientEmail }}\n📊 Tráfego: {{ .ClientTraffic }}\n📅 Data de expiração: {{ .ClientExp }}\n🌐 Limite de IP: {{ .IpLimit }}\n💬 Comentário: {{ .ClientComment }}\n\nAgora você pode adicionar o cliente à entrada!"
 "cancel" = "❌ Processo Cancelado! \n\nVocê pode iniciar novamente a qualquer momento com /start. 🔄"
-"error_add_client"  = "⚠️ Erro:\n\n {{ .error }}"
-"using_default_value"  = "Tudo bem, vou manter o valor padrão. 😊"
-"incorrect_input" ="Sua entrada não é válida.\nAs frases devem ser contínuas, sem espaços.\nExemplo correto: aaaaaa\nExemplo incorreto: aaa aaa 🚫"
+"error_add_client" = "⚠️ Erro:\n\n {{ .error }}"
+"using_default_value" = "Tudo bem, vou manter o valor padrão. 😊"
+"incorrect_input" = "Sua entrada não é válida.\nAs frases devem ser contínuas, sem espaços.\nExemplo correto: aaaaaa\nExemplo incorreto: aaa aaa 🚫"
 "AreYouSure" = "Você tem certeza? 🤔"
 "SuccessResetTraffic" = "📧 Email: {{ .ClientEmail }}\n🏁 Resultado: ✅ Sucesso"
 "FailedResetTraffic" = "📧 Email: {{ .ClientEmail }}\n🏁 Resultado: ❌ Falhou \n\n🛠️ Erro: [ {{ .ErrorMessage }} ]"

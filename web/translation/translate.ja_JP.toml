@@ -50,6 +50,7 @@
 "fail" = "失敗"
 "comment" = "コメント"
 "success" = "成功"
+"lastOnline" = "最終オンライン"
 "getVersion" = "バージョン取得"
 "install" = "インストール"
 "clients" = "クライアント"
@@ -71,6 +72,20 @@
 "emptyReverseDesc" = "追加されたリバースプロキシはありません。"
 "somethingWentWrong" = "エラーが発生しました"
 
+[subscription]
+"title" = "サブスクリプション情報"
+"subId" = "サブスクリプションID"
+"status" = "ステータス"
+"downloaded" = "ダウンロード"
+"uploaded" = "アップロード"
+"expiry" = "有効期限"
+"totalQuota" = "合計クォータ"
+"individualLinks" = "個別リンク"
+"active" = "有効"
+"inactive" = "無効"
+"unlimited" = "無制限"
+"noExpiry" = "期限なし"
+
 [menu]
 "theme" = "テーマ"
 "dark" = "ダーク"
@@ -91,7 +106,7 @@
 "invalidFormData" = "データ形式エラー"
 "emptyUsername" = "ユーザー名を入力してください"
 "emptyPassword" = "パスワードを入力してください"
-"wrongUsernameOrPassword" = "ユーザー名、パスワード、または二段階認証コードが無効です。"  
+"wrongUsernameOrPassword" = "ユーザー名、パスワード、または二段階認証コードが無効です。"
 "successLogin" = "アカウントに正常にログインしました。"
 
 [pages.index]
@@ -229,6 +244,11 @@
 "exportInbound" = "インバウンドルールをエクスポート"
 "import" = "インポート"
 "importInbound" = "インバウンドルールをインポート"
+"periodicTrafficResetTitle" = "トラフィックリセット"
+"periodicTrafficResetDesc" = "指定された間隔でトラフィックカウンタを自動的にリセット"
+"trafficCoefficient" = "トラフィック係数"
+"trafficCoefficientDesc" = "このインバウンドのトラフィック倍率。0 = グローバル係数を使用。"
+"lastReset" = "最後のリセット"
 
 [pages.client]
 "add" = "クライアント追加"
@@ -248,6 +268,12 @@
 "renew" = "自動更新"
 "renewDesc" = "期限が切れた後に自動更新。（0 = 無効）（単位：日）"
 
+[pages.inbounds.periodicTrafficReset]
+"never" = "なし"
+"daily" = "毎日"
+"weekly" = "毎週"
+"monthly" = "毎月"
+
 [pages.inbounds.toasts]
 "obtain" = "取得"
 "updateSuccess" = "更新が成功しました"
@@ -266,6 +292,7 @@
 "trafficGetError" = "トラフィックの取得中にエラーが発生しました"
 "getNewX25519CertError" = "X25519証明書の取得中にエラーが発生しました。"
 "getNewmldsa65Error" = "mldsa65証明書の取得中にエラーが発生しました。"
+"getNewVlessEncError" = "VlessEnc証明書の取得中にエラーが発生しました。"
 
 [pages.inbounds.stream.general]
 "request" = "リクエスト"
@@ -339,6 +366,8 @@
 "expireTimeDiffDesc" = "このしきい値に達した場合、有効期限に関する通知を受け取る（単位：日）"
 "trafficDiff" = "トラフィック消耗しきい値"
 "trafficDiffDesc" = "このしきい値に達した場合、トラフィック消耗に関する通知を受け取る（単位：GB）"
+"trafficCoefficient" = "トラフィック係数"
+"trafficCoefficientDesc" = "全インバウンドのグローバルトラフィック倍率。（例：2は1GB実際=2GB計算。デフォルト：1）"
 "tgNotifyCpu" = "CPU負荷通知しきい値"
 "tgNotifyCpuDesc" = "CPU負荷がこのしきい値を超えた場合、通知を受け取る（単位：%）"
 "timeZone" = "タイムゾーン"
@@ -346,8 +375,19 @@
 "subSettings" = "サブスクリプション設定"
 "subEnable" = "サブスクリプションサービスを有効にする"
 "subEnableDesc" = "サブスクリプションサービス機能を有効にする"
+"subJsonEnable" = "JSON サブスクリプションのエンドポイントを個別に有効/無効にする。"
 "subTitle" = "サブスクリプションタイトル"
 "subTitleDesc" = "VPNクライアントに表示されるタイトル"
+"subSupportUrl" = "サポートURL"
+"subSupportUrlDesc" = "VPNクライアントに表示されるテクニカルサポートへのリンク"
+"subProfileUrl" = "プロフィールURL"
+"subProfileUrlDesc" = "VPNクライアントに表示されるWebサイトへのリンク"
+"subAnnounce" = "お知らせ"
+"subAnnounceDesc" = "VPNクライアントに表示されるお知らせのテキスト"
+"subEnableRouting" = "ルーティングを有効化"
+"subEnableRoutingDesc" = "VPNクライアントでルーティングを有効にするためのグローバル設定。(Happのみ)"
+"subRoutingRules" = "ルーティングルール"
+"subRoutingRulesDesc" = "VPNクライアントのグローバルルーティングルール。(Happのみ)"
 "subListen" = "監視IP"
 "subListenDesc" = "サブスクリプションサービスが監視するIPアドレス（空白にするとすべてのIPを監視）"
 "subPort" = "監視ポート"
@@ -505,6 +545,12 @@
 "psk" = "共有キー"
 "domainStrategy" = "ドメイン戦略"
 
+[pages.xray.tun]
+"nameDesc" = "TUN インターフェースの名前。デフォルトは 'xray0' です"
+"mtuDesc" = "最大伝送単位。データパケットの最大サイズ。デフォルトは 1500 です"
+"userLevel" = "ユーザーレベル"
+"userLevelDesc" = "このインバウンドを通じて確立されたすべての接続は、このユーザーレベルを使用します。デフォルトは 0 です"
+
 [pages.xray.dns]
 "enable" = "DNSを有効にする"
 "enableDesc" = "組み込みDNSサーバーを有効にする"
@@ -518,6 +564,8 @@
 "disableFallbackDesc" = "フォールバックDNSクエリを無効にします"
 "disableFallbackIfMatch" = "一致した場合にフォールバックを無効にする"
 "disableFallbackIfMatchDesc" = "DNSサーバーの一致するドメインリストにヒットした場合、フォールバックDNSクエリを無効にします"
+"enableParallelQuery" = "並列クエリを有効にする"
+"enableParallelQueryDesc" = "複数のサーバーへの並列DNSクエリを有効にして、より高速な解決を実現"
 "strategy" = "クエリ戦略"
 "strategyDesc" = "ドメイン名解決の全体的な戦略"
 "add" = "サーバー追加"
@@ -539,9 +587,9 @@
 
 [pages.settings.security]
 "admin" = "管理者の資格情報"
-"twoFactor" = "二段階認証"  
-"twoFactorEnable" = "2FAを有効化"  
-"twoFactorEnableDesc" = "セキュリティを強化するために追加の認証層を追加します。"  
+"twoFactor" = "二段階認証"
+"twoFactorEnable" = "2FAを有効化"
+"twoFactorEnableDesc" = "セキュリティを強化するために追加の認証層を追加します。"
 "twoFactorModalSetTitle" = "二段階認証を有効にする"
 "twoFactorModalDeleteTitle" = "二段階認証を無効にする"
 "twoFactorModalSteps" = "二段階認証を設定するには、次の手順を実行してください:"
@@ -637,6 +685,7 @@
 "active" = "💡 有効：{{ .Enable }}\r\n"
 "enabled" = "🚨 有効化済み：{{ .Enable }}\r\n"
 "online" = "🌐 接続ステータス：{{ .Status }}\r\n"
+"lastOnline" = "🔙 最終オンライン: {{ .Time }}\r\n"
 "email" = "📧 メール：{{ .Email }}\r\n"
 "upload" = "🔼 アップロード↑：{{ .Upload }}\r\n"
 "download" = "🔽 ダウンロード↓：{{ .Download }}\r\n"
@@ -662,9 +711,9 @@
 "inbound_client_data_id" = "🔄 インバウンド: {{ .InboundRemark }}\n\n🔑 ID: {{ .ClientId }}\n📧 メール: {{ .ClientEmail }}\n📊 トラフィック: {{ .ClientTraffic }}\n📅 有効期限: {{ .ClientExp }}\n🌐 IP制限: {{ .IpLimit }}\n💬 コメント: {{ .ClientComment }}\n\n今すぐこのクライアントをインバウンドに追加できます！"
 "inbound_client_data_pass" = "🔄 インバウンド: {{ .InboundRemark }}\n\n🔑 パスワード: {{ .ClientPass }}\n📧 メール: {{ .ClientEmail }}\n📊 トラフィック: {{ .ClientTraffic }}\n📅 有効期限: {{ .ClientExp }}\n🌐 IP制限: {{ .IpLimit }}\n💬 コメント: {{ .ClientComment }}\n\n今すぐこのクライアントをインバウンドに追加できます！"
 "cancel" = "❌ プロセスがキャンセルされました！\n\nいつでも /start で再開できます。 🔄"
-"error_add_client"  = "⚠️ エラー:\n\n {{ .error }}"
-"using_default_value"  = "わかりました、デフォルト値を使用します。 😊"
-"incorrect_input" ="入力が無効です。\nフレーズはスペースなしで続けて入力してください。\n正しい例: aaaaaa\n間違った例: aaa aaa 🚫"
+"error_add_client" = "⚠️ エラー:\n\n {{ .error }}"
+"using_default_value" = "わかりました、デフォルト値を使用します。 😊"
+"incorrect_input" = "入力が無効です。\nフレーズはスペースなしで続けて入力してください。\n正しい例: aaaaaa\n間違った例: aaa aaa 🚫"
 "AreYouSure" = "本当にいいですか？🤔"
 "SuccessResetTraffic" = "📧 メール: {{ .ClientEmail }}\n🏁 結果: ✅ 成功"
 "FailedResetTraffic" = "📧 メール: {{ .ClientEmail }}\n🏁 結果: ❌ 失敗 \n\n🛠️ エラー: [ {{ .ErrorMessage }} ]"

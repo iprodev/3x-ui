@@ -50,6 +50,7 @@
 "fail" = "Falló"
 "comment" = "Comentario"
 "success" = "Éxito"
+"lastOnline" = "Última conexión"
 "getVersion" = "Obtener versión"
 "install" = "Instalar"
 "clients" = "Clientes"
@@ -70,6 +71,20 @@
 "emptyBalancersDesc" = "No hay balanceadores añadidos."
 "emptyReverseDesc" = "No hay proxies inversos añadidos."
 "somethingWentWrong" = "Algo salió mal"
+
+[subscription]
+"title" = "Información de suscripción"
+"subId" = "ID de suscripción"
+"status" = "Estado"
+"downloaded" = "Descargado"
+"uploaded" = "Subido"
+"expiry" = "Caducidad"
+"totalQuota" = "Cuota total"
+"individualLinks" = "Enlaces individuales"
+"active" = "Activo"
+"inactive" = "Inactivo"
+"unlimited" = "Ilimitado"
+"noExpiry" = "Sin caducidad"
 
 [menu]
 "theme" = "Tema"
@@ -229,6 +244,11 @@
 "exportInbound" = "Exportación entrante"
 "import" = "Importar"
 "importInbound" = "Importar un entrante"
+"periodicTrafficResetTitle" = "Reset de Tráfico"
+"periodicTrafficResetDesc" = "Reiniciar automáticamente el contador de tráfico en intervalos especificados"
+"trafficCoefficient" = "Coeficiente de Tráfico"
+"trafficCoefficientDesc" = "Multiplicador de tráfico para esta entrada. 0 = usar coeficiente global."
+"lastReset" = "Último reinicio"
 
 [pages.client]
 "add" = "Agregar Cliente"
@@ -248,6 +268,12 @@
 "renew" = "Renovación automática"
 "renewDesc" = "Renovación automática después de la expiración. (0 = desactivar) (unidad: día)"
 
+[pages.inbounds.periodicTrafficReset]
+"never" = "Nunca"
+"daily" = "Diariamente"
+"weekly" = "Semanalmente"
+"monthly" = "Mensualmente"
+
 [pages.inbounds.toasts]
 "obtain" = "Recibir"
 "updateSuccess" = "La actualización fue exitosa"
@@ -266,6 +292,7 @@
 "trafficGetError" = "Error al obtener los tráficos"
 "getNewX25519CertError" = "Error al obtener el certificado X25519."
 "getNewmldsa65Error" = "Error al obtener el certificado mldsa65."
+"getNewVlessEncError" = "Error al obtener el certificado VlessEnc."
 
 [pages.inbounds.stream.general]
 "request" = "Pedido"
@@ -339,6 +366,8 @@
 "expireTimeDiffDesc" = "Reciba notificaciones sobre la expiración de la cuenta antes del umbral (unidad: días)."
 "trafficDiff" = "Umbral de Tráfico para Notificación"
 "trafficDiffDesc" = "Reciba notificaciones sobre el agotamiento del tráfico antes de alcanzar el umbral (unidad: GB)."
+"trafficCoefficient" = "Coeficiente de Tráfico"
+"trafficCoefficientDesc" = "Multiplicador global de tráfico para todas las entradas. (ej. 2 significa 1 GB real = 2 GB contabilizado. Predeterminado: 1)"
 "tgNotifyCpu" = "Umbral de Alerta de Porcentaje de CPU"
 "tgNotifyCpuDesc" = "Reciba notificaciones si el uso de la CPU supera este umbral (unidad: %)."
 "timeZone" = "Zona Horaria"
@@ -346,8 +375,19 @@
 "subSettings" = "Suscripción"
 "subEnable" = "Habilitar Servicio"
 "subEnableDesc" = "Función de suscripción con configuración separada."
+"subJsonEnable" = "Habilitar/Deshabilitar el endpoint de suscripción JSON de forma independiente."
 "subTitle" = "Título de la Suscripción"
 "subTitleDesc" = "Título mostrado en el cliente de VPN"
+"subSupportUrl" = "URL de soporte"
+"subSupportUrlDesc" = "Enlace de soporte técnico mostrado en el cliente VPN"
+"subProfileUrl" = "URL del perfil"
+"subProfileUrlDesc" = "Un enlace a tu sitio web mostrado en el cliente VPN"
+"subAnnounce" = "Anuncio"
+"subAnnounceDesc" = "El texto del anuncio mostrado en el cliente VPN"
+"subEnableRouting" = "Habilitar enrutamiento"
+"subEnableRoutingDesc" = "Configuración global para habilitar el enrutamiento en el cliente VPN. (Solo para Happ)"
+"subRoutingRules" = "Reglas de enrutamiento"
+"subRoutingRulesDesc" = "Reglas de enrutamiento globales para el cliente VPN. (Solo para Happ)"
 "subListen" = "Listening IP"
 "subListenDesc" = "Dejar en blanco por defecto para monitorear todas las IPs."
 "subPort" = "Puerto de Suscripción"
@@ -505,6 +545,12 @@
 "psk" = "Clave precompartida"
 "domainStrategy" = "Estrategia de dominio"
 
+[pages.xray.tun]
+"nameDesc" = "El nombre de la interfaz TUN. El valor predeterminado es 'xray0'"
+"mtuDesc" = "Unidad Máxima de Transmisión. El tamaño máximo de los paquetes de datos. El valor predeterminado es 1500"
+"userLevel" = "Nivel de Usuario"
+"userLevelDesc" = "Todas las conexiones realizadas a través de este entrada utilizarán este nivel de usuario. El valor predeterminado es 0"
+
 [pages.xray.dns]
 "enable" = "Habilitar DNS"
 "enableDesc" = "Habilitar servidor DNS incorporado"
@@ -518,6 +564,8 @@
 "disableFallbackDesc" = "Desactiva las consultas DNS de respaldo"
 "disableFallbackIfMatch" = "Desactivar respaldo si coincide"
 "disableFallbackIfMatchDesc" = "Desactiva las consultas DNS de respaldo cuando se acierta en la lista de dominios coincidentes del servidor DNS"
+"enableParallelQuery" = "Habilitar consulta paralela"
+"enableParallelQueryDesc" = "Habilitar consultas DNS paralelas a múltiples servidores para una resolución más rápida"
 "strategy" = "Estrategia de Consulta"
 "strategyDesc" = "Estrategia general para resolver nombres de dominio"
 "add" = "Agregar Servidor"
@@ -637,6 +685,7 @@
 "active" = "💡 Activo: {{ .Enable }}\r\n"
 "enabled" = "🚨 Habilitado: {{ .Enable }}\r\n"
 "online" = "🌐 Estado de conexión: {{ .Status }}\r\n"
+"lastOnline" = "🔙 Última conexión: {{ .Time }}\r\n"
 "email" = "📧 Email: {{ .Email }}\r\n"
 "upload" = "🔼 Subida: ↑{{ .Upload }}\r\n"
 "download" = "🔽 Bajada: ↓{{ .Download }}\r\n"
@@ -662,9 +711,9 @@
 "inbound_client_data_id" = "🔄 Entrada: {{ .InboundRemark }}\n\n🔑 ID: {{ .ClientId }}\n📧 Correo: {{ .ClientEmail }}\n📊 Tráfico: {{ .ClientTraffic }}\n📅 Fecha de expiración: {{ .ClientExp }}\n🌐 Límite de IP: {{ .IpLimit }}\n💬 Comentario: {{ .ClientComment }}\n\n¡Ahora puedes agregar al cliente a la entrada!"
 "inbound_client_data_pass" = "🔄 Entrada: {{ .InboundRemark }}\n\n🔑 Contraseña: {{ .ClientPass }}\n📧 Correo: {{ .ClientEmail }}\n📊 Tráfico: {{ .ClientTraffic }}\n📅 Fecha de expiración: {{ .ClientExp }}\n🌐 Límite de IP: {{ .IpLimit }}\n💬 Comentario: {{ .ClientComment }}\n\n¡Ahora puedes agregar al cliente a la entrada!"
 "cancel" = "❌ ¡Proceso cancelado! \n\nPuedes /start de nuevo en cualquier momento. 🔄"
-"error_add_client"  = "⚠️ Error:\n\n {{ .error }}"
-"using_default_value"  = "Está bien, me quedaré con el valor predeterminado. 😊"
-"incorrect_input" ="Tu entrada no es válida.\nLas frases deben ser continuas sin espacios.\nEjemplo correcto: aaaaaa\nEjemplo incorrecto: aaa aaa 🚫"
+"error_add_client" = "⚠️ Error:\n\n {{ .error }}"
+"using_default_value" = "Está bien, me quedaré con el valor predeterminado. 😊"
+"incorrect_input" = "Tu entrada no es válida.\nLas frases deben ser continuas sin espacios.\nEjemplo correcto: aaaaaa\nEjemplo incorrecto: aaa aaa 🚫"
 "AreYouSure" = "¿Estás seguro? 🤔"
 "SuccessResetTraffic" = "📧 Correo: {{ .ClientEmail }}\n🏁 Resultado: ✅ Éxito"
 "FailedResetTraffic" = "📧 Correo: {{ .ClientEmail }}\n🏁 Resultado: ❌ Fallido \n\n🛠️ Error: [ {{ .ErrorMessage }} ]"
